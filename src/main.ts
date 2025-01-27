@@ -3,6 +3,12 @@ import { createApp } from 'vue'
 import 'virtual:svg-icons-register'
 
 import App from '@/App.vue'
+import globalComponents from './components'
+
 import '@/style.css'
 
-createApp(App).mount('#app')
+const app = createApp(App)
+// 注册全局组件
+app.use(globalComponents)
+// 挂载app实例
+app.mount('#app')
