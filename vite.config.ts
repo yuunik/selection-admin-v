@@ -30,4 +30,12 @@ export default defineConfig({
       '@': path.resolve('./src'),
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        // javascriptEnabled: true,
+        additionalData: '@import "@/styles/variable.scss";',
+      },
+    },
+  },
 })
