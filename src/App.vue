@@ -3,7 +3,7 @@ import HelloWorld from '@/components/HelloWorld.vue'
 </script>
 
 <template>
-  <div>
+  <!-- <div>
     <a href="https://vite.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>
@@ -12,7 +12,8 @@ import HelloWorld from '@/components/HelloWorld.vue'
     </a>
   </div>
   <HelloWorld msg="Vite + Vue" />
-  <SvgIcon iconName="home" width="100px" height="100px" color="red" />
+  <SvgIcon iconName="home" width="100px" height="100px" color="red" /> -->
+  <RouterView />
 </template>
 
 <style scoped>
