@@ -2,3 +2,16 @@
  * Global variables
  */
  $color-primary: #007bff;
+
+ // 登录方式共享样式
+ @mixin login-method-theme {
+    font-size: 18px;
+    cursor: pointer;
+ }
+
+ // 居中样式
+ @mixin center-theme {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ }

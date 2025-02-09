@@ -7,7 +7,6 @@ import globalComponents from './components'
 import router from '@/router'
 
 import '@/styles/index.scss'
-import '@/style.css'
 
 const app = createApp(App)
 // 注册全局组件

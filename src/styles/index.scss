@@ -2,3 +2,10 @@
  * This is the main scss file for the project.
  */
 @import "@/styles/reset.scss";
+
+html,
+body,
+#app {
+    width: 100%;
+    height: 100%;
+}
