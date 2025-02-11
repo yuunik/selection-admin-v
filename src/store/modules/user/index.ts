@@ -1,16 +1,17 @@
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
 
-import { loginApi } from '@/apis/login'
+import { getUserInfoApi, loginApi } from '@/apis/login'
 import type { LoginReqType } from '@/types/login'
 
 const useUserStore = defineStore('userStore', () => {
   // state
   let token = ref('')
-  const userInfo = reactive({})
+  let userInfo = reactive({})
   let pwdErrorCount = ref(0)
 
   // actions
+  // 用户登录
   const fetchLogin = async (loginParams: LoginReqType) => {
     const {
       data: { code, data },
@@ -21,6 +22,17 @@ const useUserStore = defineStore('userStore', () => {
     }
     // set token
     token.value = data.token
+    // get userInfo
+    await fetchUserInfo()
+  }
+
+  // 获取用户信息
+  const fetchUserInfo = async () => {
+    const {
+      data: { data },
+    } = await getUserInfoApi()
+    // set userInfo
+    userInfo = data
   }
 
   // getters

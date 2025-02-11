@@ -1,11 +1,17 @@
 import { request } from '@/utils'
-import type { CaptchaType, LoginReqType, LoginResType } from '@/types/login'
+import type {
+  CaptchaType,
+  LoginReqType,
+  LoginResType,
+  UserType,
+} from '@/types/login'
 import type { ResType } from '@/types'
 
 // 请求地址管理
 enum LoginApi {
   LOGIN = '/admin/system/index/login',
   GET_VALIDATE_CODE = '/admin/system/index/getValidateCode',
+  GET_USER_INFO = '/admin/system/index/getUserInfo',
 }
 
 // 用户登录
@@ -20,5 +26,19 @@ export const loginApi = (data: LoginReqType) =>
 export const generateCaptchaApi = () =>
   request<ResType<CaptchaType>>({
     url: LoginApi.GET_VALIDATE_CODE,
+    method: 'get',
+  })
+
+// 获取用户信息
+export const getUserInfoApi = () =>
+  request<ResType<UserType>>({
+    url: LoginApi.GET_USER_INFO,
+    method: 'get',
+  })
+
+// 用户安全退出
+export const logoutApi = () =>
+  request<ResType<any>>({
+    url: '/admin/system/index/logout',
     method: 'get',
   })

@@ -17,7 +17,7 @@ request.interceptors.request.use(
     const token = userStore.getToken()
     if (token) {
       // 设置 token
-      config.headers.Authorization = `${token}`
+      config.headers.Authorization = `Bearer ${token.value}`
     }
     // 在发送请求之前做某事
     return config
