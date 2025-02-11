@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { ChatDotSquare, Iphone, Lock, User } from '@element-plus/icons-vue'
+import { ComponentSize, ElMessage, FormInstance, FormRules } from 'element-plus'
 
-// 用户账户
-const username = ref('')
-// 用户密码
-const password = ref('')
+import { useUserStore } from '@/store'
+import type { LoginReqType } from '@/types/login'
+import { generateCaptchaApi } from '@/apis/login'
+
 // 登录方式
 const loginType = ref('password')
 // 是否需要注册
@@ -14,16 +15,64 @@ const isRegister = ref(false)
 const isSendSms = ref(false)
 // 验证码倒计时
 const count = ref(60)
+// 用户信息状态管理库
+const userStore = useUserStore()
+// 是否显示验证码输入项
+const isShowCaptchaItem = computed<boolean>(
+  () => userStore.getPwdErrorCount().value > 3,
+)
+
+// 登录表单
+const loginFormRef = ref<FormInstance>()
+// 登录表单数据
+const loginForm = reactive<LoginReqType>({
+  userName: '',
+  password: '',
+})
+// 表单尺寸
+const formSize = ref<ComponentSize>('default')
+// 登录表单校验规则
+const loginFormRules = reactive<FormRules<LoginReqType>>({
+  // 用户名校验规则
+  userName: [
+    {
+      required: true,
+      message: '请输入用户名',
+      trigger: 'blur',
+    },
+  ],
+  // 密码校验规则
+  password: [
+    {
+      required: true,
+      message: '请输入密码',
+      trigger: 'blur',
+    },
+  ],
+})
 
 // 登录
-const login = () => {}
+const login = async () => {
+  try {
+    await loginFormRef.value?.validate()
+    // 若验证码存在, 则添加验证码key进入登录参数
+    if (loginForm.captcha) {
+      loginForm.codeKey = codeKey.value
+    }
+    // 表单校验成功后的逻辑
+    await userStore.fetchLogin(loginForm)
+  } catch {
+    ElMessage.error('登录失败，请检查用户名或密码')
+  }
+}
 
 // 重置
-const resetForm = () => {}
+const resetForm = () => {
+  loginFormRef.value?.resetFields()
+}
 
 // 注册
 const gotoRegister = () => {
-  console.log('gotoRegister')
   loginType.value = 'captcha'
   isRegister.value = true
 }
@@ -50,6 +99,29 @@ const countDown = () => {
     }
   }, 1000)
 }
+
+// 验证码key
+const codeKey = ref('')
+// 验证码图片
+const codeValue = ref('')
+// 生成验证码
+const generateCaptcha = async () => {
+  const {
+    data: {
+      data: { codeKey: _codeKey, codeValue: _codeValue },
+    },
+  } = await generateCaptchaApi()
+  // 获取验证码key
+  codeKey.value = _codeKey
+  // 获取验证码图片
+  codeValue.value = _codeValue
+}
+
+// 监听 isShowCaptchaItem 变化
+watch(isShowCaptchaItem, (value) => {
+  // 验证码输入项显示, 则生成验证码
+  value && generateCaptcha()
+})
 </script>
 
 <template>
@@ -85,10 +157,14 @@ const countDown = () => {
             label-width="80"
             class="login-form"
             v-if="loginType === 'password'"
+            ref="loginFormRef"
+            :model="loginForm"
+            :size="formSize"
+            :rules="loginFormRules"
           >
-            <el-form-item label="用户名" prop="username">
+            <el-form-item label="用户名" prop="userName">
               <el-input
-                v-model="username"
+                v-model="loginForm.userName"
                 placeholder="请输入用户名"
                 :prefix-icon="User"
               />
@@ -96,11 +172,34 @@ const countDown = () => {
             <el-form-item label="密码" prop="password">
               <el-input
                 type="password"
-                v-model="password"
+                v-model="loginForm.password"
                 placeholder="请输入密码"
                 :prefix-icon="Lock"
                 show-password
               />
+            </el-form-item>
+            <el-form-item
+              label="验证码"
+              prop="captcha"
+              v-if="isShowCaptchaItem"
+              :rules="[
+                { required: true, message: '请输入验证码', trigger: 'blur' },
+              ]"
+            >
+              <el-input
+                placeholder="请输入验证码"
+                :prefix-icon="ChatDotSquare"
+                v-model="loginForm.captcha"
+              >
+                <template #suffix>
+                  <el-image
+                    :src="codeValue"
+                    fit="cover"
+                    @click="generateCaptcha"
+                    style="cursor: pointer"
+                  />
+                </template>
+              </el-input>
             </el-form-item>
             <el-form-item class="btn-grp">
               <el-button type="primary" @click="login" round>登录</el-button>
@@ -229,7 +328,6 @@ const countDown = () => {
       // 表单
       .form {
         width: 420px;
-        height: 420px;
         background-color: #fff;
         box-shadow: 0 0 10px #ccc;
         border-radius: 12px;

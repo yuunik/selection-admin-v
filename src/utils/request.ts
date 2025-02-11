@@ -1,15 +1,24 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
+import { useUserStore } from '@/store'
+
 // 封装 axios 请求
 const request = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.VITE_APP_BASE_URL,
   timeout: 5000,
 })
 
 // 请求拦截器
 request.interceptors.request.use(
   (config) => {
+    // 获取 token
+    const userStore = useUserStore()
+    const token = userStore.getToken()
+    if (token) {
+      // 设置 token
+      config.headers.Authorization = `${token}`
+    }
     // 在发送请求之前做某事
     return config
   },
@@ -22,8 +31,19 @@ request.interceptors.request.use(
 // 响应拦截器
 request.interceptors.response.use(
   (response) => {
+    const {
+      data: { code, message },
+    } = response
+    // 若不是 200 状态码，则提示错误信息
+    if (code !== 200) {
+      // 错误提示
+      ElMessage({
+        type: 'error',
+        message: message,
+      })
+    }
     // 对响应数据做点什么
-    return response.data
+    return response
   },
   (error) => {
     let msg = ''
