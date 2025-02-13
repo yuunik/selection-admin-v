@@ -6,6 +6,7 @@ import { ComponentSize, ElMessage, FormInstance, FormRules } from 'element-plus'
 import { useUserStore } from '@/store'
 import type { LoginReqType } from '@/types/login'
 import { generateCaptchaApi } from '@/apis/login'
+import { useRouter } from 'vue-router'
 
 // 登录方式
 const loginType = ref('password')
@@ -21,6 +22,8 @@ const userStore = useUserStore()
 const isShowCaptchaItem = computed<boolean>(
   () => userStore.getPwdErrorCount().value > 3,
 )
+// 获取路由
+const router = useRouter()
 
 // 登录表单
 const loginFormRef = ref<FormInstance>()
@@ -61,6 +64,10 @@ const login = async () => {
     }
     // 表单校验成功后的逻辑
     await userStore.fetchLogin(loginForm)
+    // 登录成功
+    ElMessage.success('登录成功')
+    // 跳转到首页
+    router.push('/')
   } catch {
     ElMessage.error('登录失败，请检查用户名或密码')
   }

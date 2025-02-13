@@ -22,8 +22,6 @@ const useUserStore = defineStore('userStore', () => {
     }
     // set token
     token.value = data.token
-    // get userInfo
-    await fetchUserInfo()
   }
 
   // 获取用户信息
@@ -31,8 +29,7 @@ const useUserStore = defineStore('userStore', () => {
     const {
       data: { data },
     } = await getUserInfoApi()
-    // set userInfo
-    userInfo = data
+    Object.assign(userInfo, data)
   }
 
   // getters
@@ -46,6 +43,7 @@ const useUserStore = defineStore('userStore', () => {
     userInfo,
     pwdErrorCount,
     fetchLogin,
+    fetchUserInfo,
     getToken,
     getUserInfo,
     getPwdErrorCount,
