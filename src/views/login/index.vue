@@ -2,11 +2,11 @@
 import { computed, reactive, ref, watch } from 'vue'
 import { ChatDotSquare, Iphone, Lock, User } from '@element-plus/icons-vue'
 import { ComponentSize, ElMessage, FormInstance, FormRules } from 'element-plus'
+import { useRouter } from 'vue-router'
 
 import { useUserStore } from '@/store'
 import type { LoginReqType } from '@/types/login'
 import { generateCaptchaApi } from '@/apis/login'
-import { useRouter } from 'vue-router'
 
 // 登录方式
 const loginType = ref('password')
@@ -136,7 +136,7 @@ watch(isShowCaptchaItem, (value) => {
     <div class="login-container">
       <!-- 欢迎图 -->
       <img
-        src="../../assets//login_left2.png"
+        src="../../assets/login_left2.png"
         alt="欢迎图"
         class="welcome-img"
       />

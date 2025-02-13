@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 
-import { useUserStore } from '@/store'
+import { GET_TOKEN } from '@/utils'
 
 // 封装 axios 请求
 const request = axios.create({
@@ -13,11 +13,10 @@ const request = axios.create({
 request.interceptors.request.use(
   (config) => {
     // 获取 token
-    const userStore = useUserStore()
-    const token = userStore.getToken()
+    const token = GET_TOKEN()
     if (token) {
       // 设置 token
-      config.headers.Authorization = `Bearer ${token.value}`
+      config.headers.Authorization = `Bearer ${token}`
     }
     // 在发送请求之前做某事
     return config
@@ -35,12 +34,9 @@ request.interceptors.response.use(
       data: { code, message },
     } = response
     // 若不是 200 状态码，则提示错误信息
-    if (code !== 200) {
+    if (code !== 200 && code !== 208) {
       // 错误提示
-      ElMessage({
-        type: 'error',
-        message: message,
-      })
+      ElMessage.error(message)
     }
     // 对响应数据做点什么
     return response

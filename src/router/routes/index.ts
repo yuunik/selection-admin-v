@@ -1,6 +1,7 @@
+// 常量路由
 const constantRoutes = [
   {
-    path: '/',
+    path: '/home',
     component: () => import('@/layout/index.vue'),
     name: 'layout',
   },
