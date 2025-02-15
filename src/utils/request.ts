@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-
-import { GET_TOKEN } from '@/utils'
+//@ts-expect-error 忽视类型申明
+import Cookies from 'js-cookie'
 
 // 封装 axios 请求
 const request = axios.create({
@@ -13,7 +13,7 @@ const request = axios.create({
 request.interceptors.request.use(
   (config) => {
     // 获取 token
-    const token = GET_TOKEN()
+    const token = Cookies.get('token')
     if (token) {
       // 设置 token
       config.headers.Authorization = `Bearer ${token}`

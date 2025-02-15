@@ -18,10 +18,10 @@ const isSendSms = ref(false)
 const count = ref(60)
 // 用户信息状态管理库
 const userStore = useUserStore()
+// 密码错误次数
+const pwdErrorCount = ref(0)
 // 是否显示验证码输入项
-const isShowCaptchaItem = computed<boolean>(
-  () => userStore.getPwdErrorCount().value > 3,
-)
+const isShowCaptchaItem = computed<boolean>(() => pwdErrorCount.value > 3)
 // 获取路由
 const router = useRouter()
 
@@ -57,6 +57,7 @@ const loginFormRules = reactive<FormRules<LoginReqType>>({
 // 登录
 const login = async () => {
   try {
+    // 表单校验
     await loginFormRef.value?.validate()
     // 若验证码存在, 则添加验证码key进入登录参数
     if (loginForm.captcha) {
@@ -68,8 +69,12 @@ const login = async () => {
     ElMessage.success('登录成功')
     // 跳转到首页
     router.push('/')
-  } catch {
-    ElMessage.error('登录失败，请检查用户名或密码')
+  } catch (error) {
+    const { message } = error as Error
+    if (message === '用户名或者密码错误') {
+      // 密码错误次数+1
+      pwdErrorCount.value += 1
+    }
   }
 }
 

@@ -1,67 +1,57 @@
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
-import { ElMessage } from 'element-plus'
+//@ts-expect-error ts-ignore
+import Cookies from 'js-cookie'
 
 import { getUserInfoApi, loginApi } from '@/apis/login'
 import type { LoginReqType } from '@/types/login'
-import { GET_TOKEN } from '@/utils/token.ts'
-import { SET_TOKEN } from '../../../utils'
 
 const useUserStore = defineStore('userStore', () => {
   // state
-  let token = ref(GET_TOKEN() || '')
+  let token = ref(Cookies.get('token') || '')
   let userInfo = reactive({})
-  let pwdErrorCount = ref(0)
-  let isLogin = ref(false)
 
   // actions
   // 用户登录
   const fetchLogin = async (loginParams: LoginReqType) => {
     const {
-      data: { code, data },
+      data: { code, data, message },
     } = await loginApi(loginParams)
-    if (code === 201) {
-      // 添加错误次数
-      pwdErrorCount.value++
+    if (code === 200) {
+      token.value = data.token
+      // put tooken into cookie
+      Cookies.set('token', token.value, { domain: 'localhost', expire: 7 })
+      return 'ok'
+    } else {
+      return Promise.reject(new Error(message))
     }
-    // set token
-    SET_TOKEN(data.token)
   }
 
   // 获取用户信息
   const fetchUserInfo = async () => {
     const {
-      data: { code, data },
+      data: { code, data, message },
     } = await getUserInfoApi()
-    if (code === 208) {
-      // 未登录
-      ElMessage.error('请先登录')
-      // 修改登录状态
-      isLogin.value = false
-    } else {
+    if (code === 200) {
       // set userInfo
-      Object.assign(userInfo, data)
+      userInfo = data
+    } else {
+      return Promise.reject(new Error(message))
     }
   }
 
   // getters
   const getToken = () => token
   const getUserInfo = () => userInfo
-  const getPwdErrorCount = () => pwdErrorCount
-  const getIsLogin = () => isLogin
 
   // return
   return {
     token,
     userInfo,
-    pwdErrorCount,
-    isLogin,
     fetchLogin,
     fetchUserInfo,
     getToken,
     getUserInfo,
-    getPwdErrorCount,
-    getIsLogin,
   }
 })
 
