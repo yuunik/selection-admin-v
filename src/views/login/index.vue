@@ -141,7 +141,11 @@ watch(isShowCaptchaItem, (value) => {
   <div class="bg">
     <div class="login-container">
       <!-- 欢迎图 -->
-      <img src="../../assets/login_left2.png" alt="欢迎图" class="welcome-img" />
+      <img
+        src="../../assets/login_left2.png"
+        alt="欢迎图"
+        class="welcome-img"
+      />
       <!-- 表单 -->
       <div class="form-container">
         <!-- 表单 -->
@@ -162,40 +166,84 @@ watch(isShowCaptchaItem, (value) => {
           </div>
           <!-- 表单内容 -->
           <!-- 登录表单 -->
-          <el-form label-width="80" class="login-form" v-if="loginType === 'password'" ref="loginFormRef"
-            :model="loginForm" :size="formSize" :rules="loginFormRules">
+          <el-form
+            label-width="80"
+            class="login-form"
+            v-if="loginType === 'password'"
+            ref="loginFormRef"
+            :model="loginForm"
+            :size="formSize"
+            :rules="loginFormRules"
+          >
             <el-form-item label="用户名" prop="userName">
-              <el-input v-model="loginForm.userName" placeholder="请输入用户名" :prefix-icon="User" />
+              <el-input
+                v-model="loginForm.userName"
+                placeholder="请输入用户名"
+                :prefix-icon="User"
+              />
             </el-form-item>
             <el-form-item label="密码" prop="password">
-              <el-input type="password" v-model="loginForm.password" placeholder="请输入密码" :prefix-icon="Lock"
-                show-password />
+              <el-input
+                type="password"
+                v-model="loginForm.password"
+                placeholder="请输入密码"
+                :prefix-icon="Lock"
+                show-password
+              />
             </el-form-item>
-            <el-form-item label="验证码" prop="captcha" v-if="isShowCaptchaItem" :rules="[
-              { required: true, message: '请输入验证码', trigger: 'blur' },
-            ]">
-              <el-input placeholder="请输入验证码" :prefix-icon="ChatDotSquare" v-model="loginForm.captcha">
+            <el-form-item
+              label="验证码"
+              prop="captcha"
+              v-if="isShowCaptchaItem"
+              :rules="[
+                { required: true, message: '请输入验证码', trigger: 'blur' },
+              ]"
+            >
+              <el-input
+                placeholder="请输入验证码"
+                :prefix-icon="ChatDotSquare"
+                v-model="loginForm.captcha"
+              >
                 <template #suffix>
-                  <el-image :src="codeValue" fit="cover" @click="generateCaptcha" style="cursor: pointer" />
+                  <el-image
+                    :src="codeValue"
+                    fit="cover"
+                    @click="generateCaptcha"
+                    style="cursor: pointer"
+                  />
                 </template>
               </el-input>
             </el-form-item>
             <el-form-item class="btn-grp">
               <el-button type="primary" @click="login" round>登录</el-button>
-              <el-button type="default" @click="resetForm" round style="margin-left: 50px">
+              <el-button
+                type="default"
+                @click="resetForm"
+                round
+                style="margin-left: 50px"
+              >
                 重置
               </el-button>
             </el-form-item>
           </el-form>
           <!-- 短信登录表单 -->
-          <el-form label-width="80" class="sms-form" v-if="loginType === 'captcha'">
+          <el-form
+            label-width="80"
+            class="sms-form"
+            v-if="loginType === 'captcha'"
+          >
             <el-form-item label="手机号" prop="phone">
               <el-input placeholder="请输入手机号" :prefix-icon="Iphone" />
             </el-form-item>
             <el-form-item label="验证码" prop="captcha">
               <el-input placeholder="请输入验证码" :prefix-icon="ChatDotSquare">
                 <template #suffix>
-                  <el-button type="primary" @click="sendSms" link :disabled="isSendSms">
+                  <el-button
+                    type="primary"
+                    @click="sendSms"
+                    link
+                    :disabled="isSendSms"
+                  >
                     {{ isSendSms ? `${count}秒后重发` : '获取验证码' }}
                   </el-button>
                 </template>
@@ -205,7 +253,12 @@ watch(isShowCaptchaItem, (value) => {
               <el-button type="primary" @click="login" round>
                 {{ isRegister ? '注册' : '登录' }}
               </el-button>
-              <el-button type="default" @click="resetForm" round style="margin-left: 50px">
+              <el-button
+                type="default"
+                @click="resetForm"
+                round
+                style="margin-left: 50px"
+              >
                 重置
               </el-button>
             </el-form-item>
@@ -215,14 +268,31 @@ watch(isShowCaptchaItem, (value) => {
             <el-divider>第三方登录</el-divider>
             <div class="icon-grp">
               <!-- QQ登录图标 -->
-              <SvgIcon iconName="QQ" class="qq-icon" width="25" height="25" color="#10aeff" />
+              <SvgIcon
+                iconName="QQ"
+                class="qq-icon"
+                width="25"
+                height="25"
+                color="#10aeff"
+              />
               <el-divider direction="vertical" />
               <!-- 微信登录图标 -->
-              <SvgIcon iconName="wechat" class="wechat-icon" width="25" height="25" color="#2cb733" />
+              <SvgIcon
+                iconName="wechat"
+                class="wechat-icon"
+                width="25"
+                height="25"
+                color="#2cb733"
+              />
             </div>
           </div>
           <!-- 立即注册 -->
-          <el-button type="primary" class="register-btn" link @click="gotoRegister">
+          <el-button
+            type="primary"
+            class="register-btn"
+            link
+            @click="gotoRegister"
+          >
             立即注册
           </el-button>
         </div>
@@ -313,7 +383,6 @@ watch(isShowCaptchaItem, (value) => {
 
         // 登录表单
         .login-form {
-
           // 按键组
           .btn-grp {
             display: flex;

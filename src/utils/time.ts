@@ -9,7 +9,7 @@ import type { Component } from 'vue'
 
 // 时间问候函数返回的数据类型
 interface GreetingResType {
-  timeMsg: string,
+  timeMsg: string
   timeIcon: Component
 }
 
