@@ -4,12 +4,20 @@ import { reactive, ref } from 'vue'
 import Cookies from 'js-cookie'
 
 import { getUserInfoApi, loginApi } from '@/apis/login'
-import type { LoginReqType } from '@/types/login'
+import type { LoginReqType, UserType } from '@/types/login'
 
 const useUserStore = defineStore('userStore', () => {
   // state
-  let token = ref(Cookies.get('token') || '')
-  let userInfo = reactive({})
+  let token = ref<string>(Cookies.get('token') || '')
+  let userInfo = reactive<UserType>({
+    userName: '',
+    password: '',
+    name: '',
+    phone: '',
+    avatar: '',
+    description: '',
+    status: 0,
+  })
 
   // actions
   // 用户登录
@@ -20,7 +28,7 @@ const useUserStore = defineStore('userStore', () => {
     if (code === 200) {
       token.value = data.token
       // put tooken into cookie
-      Cookies.set('token', token.value, { domain: 'localhost', expire: 7 })
+      Cookies.set('token', token.value, { domain: 'localhost', expires: 7 })
       return 'ok'
     } else {
       return Promise.reject(new Error(message))
@@ -34,7 +42,7 @@ const useUserStore = defineStore('userStore', () => {
     } = await getUserInfoApi()
     if (code === 200) {
       // set userInfo
-      userInfo = data
+      Object.assign(userInfo, data)
     } else {
       return Promise.reject(new Error(message))
     }

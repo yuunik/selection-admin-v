@@ -33,7 +33,7 @@ export type UserType = {
   // 密码
   password: string
   // 昵称
-  nickName: string
+  name: string
   // 手机号码
   phone: string
   // 头像
