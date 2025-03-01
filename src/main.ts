@@ -2,6 +2,8 @@ import { createApp } from 'vue'
 // svg icon support
 import 'virtual:svg-icons-register'
 import 'element-plus/dist/index.css'
+// uno.css
+import 'virtual:uno.css'
 
 import App from '@/App.vue'
 import globalComponents from './components'

@@ -1,10 +1,11 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElNotification } from 'element-plus'
 
 import { useUserStore } from '@/store'
 import { greeting } from '@/utils'
+import Logo from './components/Logo/index.vue'
 
 // 获取用户状态管理库
 const userStore = useUserStore()
@@ -25,7 +26,6 @@ const getUserInfo = async () => {
   try {
     // 获取用户信息
     await userStore.fetchUserInfo()
-    console.log('0----------', userStore.userInfo)
     // 问候语提示
     ElNotification({
       title: timeMsg,
@@ -42,8 +42,18 @@ const getUserInfo = async () => {
 </script>
 
 <template>
-  <div>
-    <h1>Layout Page</h1>
+  <div h-full flex>
+    <!-- 菜单栏 -->
+    <nav w-menu bg-emerald h-full bg-menuColor>
+      <Logo />
+    </nav>
+    <!-- 操作区 -->
+    <div flex-1 h-full>
+      <!-- tabbar 栏 -->
+      <header h100 bg-red></header>
+      <!-- 内容区 -->
+      <main hc100 bg-amber></main>
+    </div>
   </div>
 </template>
 
