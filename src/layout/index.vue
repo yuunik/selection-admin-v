@@ -6,7 +6,7 @@ import { ElMessage, ElNotification } from 'element-plus'
 import { useUserStore } from '@/store'
 import { greeting } from '@/utils'
 import Logo from './components/Logo/index.vue'
-import Menu from './components/MenuItem/index.vue'
+import MenuItem from './components/MenuItem/index.vue'
 
 // 获取用户状态管理库
 const userStore = useUserStore()
@@ -49,8 +49,14 @@ const getUserInfo = async () => {
       <!-- 网站 logo -->
       <Logo />
       <!-- 菜单栏 -->
-      <el-menu backgroundColor="#001529" textColor="#fff" class="b-n">
-        <Menu :userMenuRoutes="userStore.userMenuRoutes" />
+      <el-menu
+        backgroundColor="#001529"
+        textColor="#fff"
+        class="b-n"
+        hc50
+        overflow-auto
+      >
+        <MenuItem :userMenuRoutes="userStore.userMenuRoutes" />
       </el-menu>
     </nav>
     <!-- 操作区 -->
