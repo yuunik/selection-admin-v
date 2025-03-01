@@ -1,4 +1,4 @@
-<script setup lang="tsx">
+<script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElNotification } from 'element-plus'
@@ -6,6 +6,7 @@ import { ElMessage, ElNotification } from 'element-plus'
 import { useUserStore } from '@/store'
 import { greeting } from '@/utils'
 import Logo from './components/Logo/index.vue'
+import Menu from './components/MenuItem/index.vue'
 
 // 获取用户状态管理库
 const userStore = useUserStore()
@@ -45,7 +46,12 @@ const getUserInfo = async () => {
   <div h-full flex>
     <!-- 菜单栏 -->
     <nav w-menu bg-emerald h-full bg-menuColor>
+      <!-- 网站 logo -->
       <Logo />
+      <!-- 菜单栏 -->
+      <el-menu backgroundColor="#001529" textColor="#fff" class="b-n">
+        <Menu :userMenuRoutes="userStore.userMenuRoutes" />
+      </el-menu>
     </nav>
     <!-- 操作区 -->
     <div flex-1 h-full>
@@ -57,4 +63,8 @@ const getUserInfo = async () => {
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.b-n {
+  border: none;
+}
+</style>

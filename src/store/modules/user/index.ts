@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
-//@ts-expect-error ts-ignore
 import Cookies from 'js-cookie'
+import type { RouteRecordRaw } from 'vue-router'
 
 import { getUserInfoApi, loginApi } from '@/apis/login'
 import type { LoginReqType, UserType } from '@/types/login'
+import constantRoutes from '@/router/routes'
 
 const useUserStore = defineStore('userStore', () => {
   // state
@@ -18,6 +19,8 @@ const useUserStore = defineStore('userStore', () => {
     description: '',
     status: 0,
   })
+  // 用户菜单权限
+  const userMenuRoutes = ref<RouteRecordRaw[]>(constantRoutes)
 
   // actions
   // 用户登录
@@ -56,6 +59,7 @@ const useUserStore = defineStore('userStore', () => {
   return {
     token,
     userInfo,
+    userMenuRoutes,
     fetchLogin,
     fetchUserInfo,
     getToken,
