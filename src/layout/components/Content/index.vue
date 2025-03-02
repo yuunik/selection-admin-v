@@ -1,9 +1,26 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useLayoutSettingStore } from '@/store'
+import { storeToRefs } from 'pinia'
+import { nextTick, onUnmounted, watch } from 'vue'
+
+const layoutSettingStore = useLayoutSettingStore()
+const { isRefresh } = storeToRefs(layoutSettingStore)
+
+// 监听刷新状态
+watch(isRefresh, (val) => {
+  if (val) {
+    nextTick(() => {
+      // 组件更新完成后, 重新挂载二级路由组件
+      layoutSettingStore.changeIsRefresh()
+    })
+  }
+})
+</script>
 
 <template>
   <RouterView v-slot="{ Component }">
     <Transition name="fade">
-      <component :is="Component" />
+      <component :is="Component" v-if="!isRefresh" />
     </Transition>
   </RouterView>
 </template>

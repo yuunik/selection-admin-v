@@ -1,12 +1,22 @@
 <script setup lang="ts">
-import { ArrowDown } from '@element-plus/icons-vue'
+import { useLayoutSettingStore } from '@/store'
+
+// 获取修改刷新状态的方法
+const { changeIsRefresh } = useLayoutSettingStore()
 </script>
 
 <template>
   <div flex-center>
     <!-- 刷新按钮 -->
     <el-tooltip content="刷新" placement="bottom">
-      <el-button type="default" plain circle icon="Refresh" size="small" />
+      <el-button
+        type="default"
+        plain
+        circle
+        icon="Refresh"
+        size="small"
+        @click="changeIsRefresh"
+      />
     </el-tooltip>
     <!-- 全屏按钮 -->
     <el-tooltip content="全屏" placement="bottom">
