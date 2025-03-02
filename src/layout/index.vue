@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElNotification } from 'element-plus'
 
-import { useUserStore } from '@/store'
+import { useLayoutSettingStore, useUserStore } from '@/store'
 import { greeting } from '@/utils'
 import Logo from './components/Logo/index.vue'
 import MenuItem from './components/MenuItem/index.vue'
+import Tabbar from './components/Tabbar/index.vue'
+import Content from './components/Content/index.vue'
+import { storeToRefs } from 'pinia'
+import component from 'element-plus/es/components/tree-select/src/tree-select-option.mjs'
 
 // 获取用户状态管理库
 const userStore = useUserStore()
@@ -40,12 +44,20 @@ const getUserInfo = async () => {
     router.push('/login')
   }
 }
+// 获取设置的状态管理库
+const layoutSettingStore = useLayoutSettingStore()
+// 获取菜单栏的折叠状态
+const { isFold } = storeToRefs(layoutSettingStore)
+// 菜单栏类名
+const menuClass = computed(() =>
+  isFold.value ? 'wf-menu-width' : 'wb-menu-width',
+)
 </script>
 
 <template>
   <div h-full flex>
     <!-- 菜单栏 -->
-    <nav w-menu bg-emerald h-full bg-menuColor>
+    <nav :class="menuClass" bg-emerald h-full bg-menuColor>
       <!-- 网站 logo -->
       <Logo />
       <!-- 菜单栏 -->
@@ -55,16 +67,21 @@ const getUserInfo = async () => {
         class="b-n"
         hc50
         overflow-auto
+        :collapse="isFold"
       >
         <MenuItem :userMenuRoutes="userStore.userMenuRoutes" />
       </el-menu>
     </nav>
     <!-- 操作区 -->
-    <div flex-1 h-full>
+    <div flex-1 h-full transition-all>
       <!-- tabbar 栏 -->
-      <header h100 bg-red></header>
+      <header h50 bg-red p20 box-border>
+        <Tabbar />
+      </header>
       <!-- 内容区 -->
-      <main hc100 bg-amber></main>
+      <main hc50 bg-amber overflow-auto p20>
+        <Content />
+      </main>
     </div>
   </div>
 </template>

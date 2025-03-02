@@ -32,8 +32,10 @@ export default defineConfig({
     [/^hp([\.\d]+)$/, ([_, num]) => ({ height: `${num}%` })],
     // calc 函数写法
     [/^hc([\.\d]+)$/, ([_, num]) => ({ height: `calc(100% - ${num}px)` })],
-    // 菜单栏宽度
-    ['w-menu', { width: '250px' }],
+    // 菜单栏未折叠宽度
+    ['wb-menu-width', { width: '250px' }],
+    // 菜单栏未折叠宽度
+    ['wf-menu-width', { width: '65px' }],
   ],
   // 自定义属性 一个属性可以对应多个 unocss 类值
   shortcuts: [
@@ -48,6 +50,8 @@ export default defineConfig({
       'flex-between': 'flex items-center justify-between',
       // 竖着居中
       'flex-col-center': 'flex flex-col items-center',
+      // 图标大小
+      'icon-style': 'inline-block w-25 h-25 cursor-pointer',
     },
   ],
   theme: {

@@ -54,7 +54,7 @@ defineProps<MenuItemProp>()
         <!-- 菜单图标 -->
         <CustomIcon :icon="route.meta?.icon as string" />
         <!-- 菜单标题 -->
-        <em>{{ route.meta?.title }}</em>
+        <span>{{ route.meta?.title }}</span>
       </template>
       <MenuItem :userMenuRoutes="route.children" />
     </el-sub-menu>
