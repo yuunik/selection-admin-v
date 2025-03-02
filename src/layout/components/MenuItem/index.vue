@@ -20,6 +20,7 @@ defineProps<MenuItemProp>()
     <el-menu-item
       :index="route.path"
       v-if="route.meta?.isShow && !route.children"
+      @click="$router.push(route.path)"
     >
       <!-- 菜单图标 -->
       <CustomIcon :icon="route.meta?.icon as string" />
@@ -36,6 +37,7 @@ defineProps<MenuItemProp>()
         route.children![0].meta?.isShow &&
         route.children.length === 1
       "
+      @click="$router.push(route.path)"
     >
       <!-- 菜单图标 -->
       <CustomIcon :icon="route.children[0].meta.icon as string" />

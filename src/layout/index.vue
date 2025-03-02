@@ -52,12 +52,16 @@ const { isFold } = storeToRefs(layoutSettingStore)
 const menuClass = computed(() =>
   isFold.value ? 'wf-menu-width' : 'wb-menu-width',
 )
+
+const onSelect = (e) => {
+  console.log(e)
+}
 </script>
 
 <template>
   <div h-full flex>
     <!-- 菜单栏 -->
-    <nav :class="menuClass" bg-emerald h-full bg-menuColor>
+    <nav :class="menuClass" bg-emerald h-full bg-menuColor transition-all>
       <!-- 网站 logo -->
       <Logo />
       <!-- 菜单栏 -->
@@ -68,6 +72,8 @@ const menuClass = computed(() =>
         hc50
         overflow-auto
         :collapse="isFold"
+        :collapse-transition="false"
+        @select="onSelect"
       >
         <MenuItem :userMenuRoutes="userStore.userMenuRoutes" />
       </el-menu>
