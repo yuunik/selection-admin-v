@@ -10,7 +10,6 @@ import MenuItem from './components/MenuItem/index.vue'
 import Tabbar from './components/Tabbar/index.vue'
 import Content from './components/Content/index.vue'
 import { storeToRefs } from 'pinia'
-import component from 'element-plus/es/components/tree-select/src/tree-select-option.mjs'
 
 // 获取用户状态管理库
 const userStore = useUserStore()
@@ -52,10 +51,6 @@ const { isFold } = storeToRefs(layoutSettingStore)
 const menuClass = computed(() =>
   isFold.value ? 'wf-menu-width' : 'wb-menu-width',
 )
-
-const onSelect = (e) => {
-  console.log(e)
-}
 </script>
 
 <template>
@@ -73,7 +68,6 @@ const onSelect = (e) => {
         overflow-auto
         :collapse="isFold"
         :collapse-transition="false"
-        @select="onSelect"
       >
         <MenuItem :userMenuRoutes="userStore.userMenuRoutes" />
       </el-menu>
@@ -81,11 +75,11 @@ const onSelect = (e) => {
     <!-- 操作区 -->
     <div flex-1 h-full transition-all>
       <!-- tabbar 栏 -->
-      <header h50 bg-red p20 box-border>
+      <header h5 p20 box-border class="b-bottom-1">
         <Tabbar />
       </header>
       <!-- 内容区 -->
-      <main hc50 bg-amber overflow-auto p20>
+      <main hc50 overflow-auto p20>
         <Content />
       </main>
     </div>
@@ -95,5 +89,9 @@ const onSelect = (e) => {
 <style lang="scss" scoped>
 .b-n {
   border: none;
+}
+
+.b-bottom-1 {
+  border-bottom: 1px solid #ccc;
 }
 </style>

@@ -57,6 +57,7 @@ export default defineConfig({
   theme: {
     colors: {
       menuColor: '#001529',
+      primaryColor: '#409eff',
     },
     extend: {
       // 自定义配置
