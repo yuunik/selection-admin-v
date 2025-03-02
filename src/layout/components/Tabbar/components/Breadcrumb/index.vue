@@ -1,17 +1,13 @@
 <script setup lang="ts">
-import { useLayoutSettingStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { computed } from 'vue'
-import { routerKey, useRouter } from 'vue-router'
+
+import { useLayoutSettingStore } from '@/store'
 
 // 折叠图标类名
 const iconClass = computed(() => (isFold.value ? 'i-ep:expand' : 'i-ep:fold'))
 const layoutSettingStore = useLayoutSettingStore()
 const { isFold } = storeToRefs(layoutSettingStore)
-
-const router = useRouter()
-console.log('111111111111111111')
-console.log(router)
 </script>
 
 <template>

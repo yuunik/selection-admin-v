@@ -1,8 +1,44 @@
 <script setup lang="ts">
 import { useLayoutSettingStore } from '@/store'
+import { onMounted, onUnmounted, ref } from 'vue'
 
 // 获取修改刷新状态的方法
 const { changeIsRefresh } = useLayoutSettingStore()
+
+// 是否为全屏状态
+const isFullScreen = ref(false)
+// 全屏按钮的点击事件
+const onFullScreen = () => {
+  if (!document.fullscreenElement) {
+    // 进入全屏
+    isFullScreen.value = true
+    document.documentElement.requestFullscreen()
+  } else {
+    // 退出全屏
+    isFullScreen.value = false
+    document.exitFullscreen()
+  }
+}
+
+// 阻止默认全屏事件, 强制使用 api 全屏
+const onStopUseF11 = (e: KeyboardEvent) => {
+  if (e.key === 'F11') {
+    // 阻止默认全屏事件
+    e.preventDefault()
+    // 强制使用 api 全屏
+    onFullScreen()
+  }
+}
+
+// 组件挂载时监听浏览器窗口尺寸大小的变化
+onMounted(() => {
+  window.addEventListener('keydown', onStopUseF11)
+})
+
+// 组件销毁时移除监听浏览器窗口尺寸大小的变化
+onUnmounted(() => {
+  window.removeEventListener('keydown', onStopUseF11)
+})
 </script>
 
 <template>
@@ -19,8 +55,18 @@ const { changeIsRefresh } = useLayoutSettingStore()
       />
     </el-tooltip>
     <!-- 全屏按钮 -->
-    <el-tooltip content="全屏" placement="bottom">
-      <el-button type="default" plain circle icon="FullScreen" size="small" />
+    <el-tooltip
+      :content="isFullScreen ? '退出全屏' : '全屏'"
+      placement="bottom"
+    >
+      <el-button
+        type="default"
+        plain
+        circle
+        :icon="isFullScreen ? 'ZoomOut' : 'FullScreen'"
+        size="small"
+        @click="onFullScreen"
+      />
     </el-tooltip>
     <!-- 基础设置按钮 -->
     <el-tooltip content="基础设置" placement="bottom">

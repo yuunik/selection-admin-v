@@ -2,6 +2,7 @@
 import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElNotification } from 'element-plus'
+import { storeToRefs } from 'pinia'
 
 import { useLayoutSettingStore, useUserStore } from '@/store'
 import { greeting } from '@/utils'
@@ -9,7 +10,6 @@ import Logo from './components/Logo/index.vue'
 import MenuItem from './components/MenuItem/index.vue'
 import Tabbar from './components/Tabbar/index.vue'
 import Content from './components/Content/index.vue'
-import { storeToRefs } from 'pinia'
 
 // 获取用户状态管理库
 const userStore = useUserStore()
@@ -81,7 +81,7 @@ const menuClass = computed(() =>
         <Tabbar />
       </header>
       <!-- 内容区 -->
-      <main hc50 overflow-auto p20>
+      <main hc50 overflow-auto p20 box-border>
         <Content />
       </main>
     </div>
