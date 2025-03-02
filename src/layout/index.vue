@@ -56,7 +56,7 @@ const menuClass = computed(() =>
 <template>
   <div h-full flex>
     <!-- 菜单栏 -->
-    <nav :class="menuClass" bg-emerald h-full bg-menuColor transition-all>
+    <nav :class="menuClass" h-full bg-menuColor transition-all>
       <!-- 网站 logo -->
       <Logo />
       <!-- 菜单栏 -->
@@ -68,6 +68,8 @@ const menuClass = computed(() =>
         overflow-auto
         :collapse="isFold"
         :collapse-transition="false"
+        :default-active="$route.path"
+        active-text-color="#3A937E"
       >
         <MenuItem :userMenuRoutes="userStore.userMenuRoutes" />
       </el-menu>
@@ -93,5 +95,10 @@ const menuClass = computed(() =>
 
 .b-bottom-1 {
   border-bottom: 1px solid #ccc;
+}
+
+// 样式穿透
+:deep(.el-menu-item.is-active) {
+  @apply menu-item-style;
 }
 </style>

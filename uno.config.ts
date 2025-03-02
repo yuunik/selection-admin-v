@@ -52,6 +52,8 @@ export default defineConfig({
       'flex-col-center': 'flex flex-col items-center',
       // 图标大小
       'icon-style': 'inline-block w-25 h-25 cursor-pointer',
+      // 菜单栏子项
+      'menu-item-style': 'm-4 rounded-8 bg-[#35496E]',
     },
   ],
   theme: {

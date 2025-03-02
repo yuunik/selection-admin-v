@@ -31,10 +31,10 @@ defineProps<MenuItemProp>()
     </el-menu-item>
     <!-- 路由有且仅有一个子路由 -->
     <el-menu-item
-      :index="route.path"
+      :index="route.children[0].path"
       v-if="
         route.children &&
-        route.children![0].meta?.isShow &&
+        route.children[0].meta?.isShow &&
         route.children.length === 1
       "
       @click="$router.push(route.path)"
@@ -43,7 +43,9 @@ defineProps<MenuItemProp>()
       <CustomIcon :icon="route.children[0].meta.icon as string" />
       <!-- 菜单标题 -->
       <template #title>
-        <em>{{ route.children[0].meta?.title }}</em>
+        <em>
+          {{ route.children[0].meta?.title }}
+        </em>
       </template>
     </el-menu-item>
     <!-- 路由有路由且大于一个子路由 -->
