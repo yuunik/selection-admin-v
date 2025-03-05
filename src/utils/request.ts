@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-//@ts-expect-error 忽视类型申明
 import Cookies from 'js-cookie'
 
 // 封装 axios 请求

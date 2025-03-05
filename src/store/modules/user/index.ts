@@ -3,7 +3,7 @@ import { reactive, ref } from 'vue'
 import Cookies from 'js-cookie'
 import type { RouteRecordRaw } from 'vue-router'
 
-import { getUserInfoApi, loginApi } from '@/apis/login'
+import { getUserInfoApi, loginApi, logoutApi } from '@/apis/login'
 import type { LoginReqType, UserType } from '@/types/login'
 import constantRoutes from '@/router/routes'
 
@@ -51,6 +51,34 @@ const useUserStore = defineStore('userStore', () => {
     }
   }
 
+  // 安全退出
+  const fetchLogout = async () => {
+    const {
+      data: { code, message },
+    } = await logoutApi()
+    if (code === 200) {
+      // 退出登录
+      // 清除用户信息
+      token.value = ''
+      Object.assign(userInfo, {
+        userName: '',
+        password: '',
+        name: '',
+        phone: '',
+        avatar: '',
+        description: '',
+        status: 0,
+      })
+      // 清除 Cookie
+      Cookies.remove('token')
+      // 返回成功Promise
+      return 'ok'
+    } else {
+      // 返回失败Promise
+      return Promise.reject(new Error(message))
+    }
+  }
+
   // getters
   const getToken = () => token
   const getUserInfo = () => userInfo
@@ -62,6 +90,7 @@ const useUserStore = defineStore('userStore', () => {
     userMenuRoutes,
     fetchLogin,
     fetchUserInfo,
+    fetchLogout,
     getToken,
     getUserInfo,
   }

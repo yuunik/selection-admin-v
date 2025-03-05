@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useLayoutSettingStore, useUserStore } from '@/store'
+import { ElMessage } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { onMounted, onUnmounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 // 获取修改刷新状态的方法
 const { changeIsRefresh } = useLayoutSettingStore()
@@ -44,6 +46,24 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('keydown', onStopUseF11)
 })
+
+// 获取路由器
+const router = useRouter()
+// 获取当前路由
+const route = useRoute()
+
+// 退出登录
+const onLogout = async () => {
+  try {
+    await userStore.fetchLogout()
+    console.log('@@@@@@@@@@@@', userInfo.value)
+    // 退出成功, 则跳转登录页面
+    router.push({ path: '/login', query: { redirect: route.path } })
+  } catch (error) {
+    // 退出失败, 则提示错误信息
+    ElMessage.error((error as Error).message)
+  }
+}
 </script>
 
 <template>
@@ -107,7 +127,16 @@ onUnmounted(() => {
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item icon="CloseBold">
-            <strong text-red-5>安全退出</strong>
+            <el-popconfirm
+              title="是否确认退出登录?"
+              confirm-button-text="确定"
+              cancel-button-text="取消"
+              @confirm="onLogout"
+            >
+              <template #reference>
+                <strong text-red-5>安全退出</strong>
+              </template>
+            </el-popconfirm>
           </el-dropdown-item>
         </el-dropdown-menu>
       </template>

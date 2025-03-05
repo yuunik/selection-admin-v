@@ -9,15 +9,16 @@ import type { ResType } from '@/types'
 
 // 请求地址管理
 enum LoginApi {
-  LOGIN = '/admin/system/index/login',
+  LOGIN_URL = '/admin/system/index/login',
   GET_VALIDATE_CODE = '/admin/system/index/getValidateCode',
   GET_USER_INFO = '/admin/system/index/getUserInfo',
+  LOGOUT_URL = '/admin/system/index/logout',
 }
 
 // 用户登录
 export const loginApi = (data: LoginReqType) =>
   request<ResType<LoginResType>>({
-    url: LoginApi.LOGIN,
+    url: LoginApi.LOGIN_URL,
     method: 'post',
     data,
   })
@@ -39,6 +40,6 @@ export const getUserInfoApi = () =>
 // 用户安全退出
 export const logoutApi = () =>
   request<ResType<any>>({
-    url: '/admin/system/index/logout',
+    url: LoginApi.LOGOUT_URL,
     method: 'get',
   })
