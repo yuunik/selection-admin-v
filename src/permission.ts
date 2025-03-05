@@ -4,6 +4,8 @@ import store, { useUserStore } from './store'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
+import settings from '@/settings'
+
 /**
  * 路由鉴权
  */
@@ -14,10 +16,15 @@ const userStore = useUserStore(store)
 // 取消小圆圈图标
 NProgress.configure({ showSpinner: false })
 
+// 获取网站标题
+const { websiteTitle } = settings
+
 // 前置路由守卫
 router.beforeEach(async (to, from, next) => {
   // 开启进度条
   NProgress.start()
+  // 设置页面标题
+  document.title = `${websiteTitle}/${to.meta.title}`
   // 获取 token
   const token = userStore.token
   // 获取用户信息
@@ -35,11 +42,9 @@ router.beforeEach(async (to, from, next) => {
     } else {
       // 用户信息判别
       if (userInfo.id) {
-        console.log('有用户信息')
         // 有用户信息，放行
         next()
       } else {
-        console.log('无用户信息', to, from)
         try {
           // 无用户信息，重新获取用户信息
           await userStore.fetchUserInfo()

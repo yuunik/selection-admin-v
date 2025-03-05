@@ -18,7 +18,9 @@ const { isFold } = storeToRefs(layoutSettingStore)
       :class="iconClass"
       icon-style
       @click="layoutSettingStore.changeIsFold()"
-      mr12
+      mr10
+      w16
+      h16
     ></i>
     <!-- 面包屑 -->
     <el-breadcrumb separator="/">
