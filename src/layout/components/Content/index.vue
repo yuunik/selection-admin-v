@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useLayoutSettingStore } from '@/store'
 import { storeToRefs } from 'pinia'
-import { nextTick, onUnmounted, watch } from 'vue'
+import { nextTick, watch } from 'vue'
 
+// 获取 layoutSettingStore
 const layoutSettingStore = useLayoutSettingStore()
+// 获取 isRefresh
 const { isRefresh } = storeToRefs(layoutSettingStore)
 
 // 监听刷新状态

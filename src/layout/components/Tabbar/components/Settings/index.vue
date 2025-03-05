@@ -1,9 +1,14 @@
 <script setup lang="ts">
-import { useLayoutSettingStore } from '@/store'
+import { useLayoutSettingStore, useUserStore } from '@/store'
+import { storeToRefs } from 'pinia'
 import { onMounted, onUnmounted, ref } from 'vue'
 
 // 获取修改刷新状态的方法
 const { changeIsRefresh } = useLayoutSettingStore()
+
+// 获取用户信息
+const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 
 // 是否为全屏状态
 const isFullScreen = ref(false)
@@ -76,17 +81,25 @@ onUnmounted(() => {
     <el-avatar
       shape="circle"
       size="small"
-      src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+      :src="userInfo.avatar"
       fit="cover"
       ml12
       cursor-pointer
-      hover:border-primaryColor
+      active:border-solid-1
+      active:position-absolute
+      active:top-100
+      active:right-100
+      active:w-250
+      active:h-250
+      active:block
+      active:rounded-8
+      transition-default
     />
     <!-- 用户退出模块 -->
     <el-dropdown ml12>
       <!-- 用户名 -->
       <em cursor-pointer flex-center>
-        Chorria
+        {{ userInfo.name }}
         <el-icon ml5>
           <arrow-down />
         </el-icon>

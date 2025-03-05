@@ -54,6 +54,10 @@ export default defineConfig({
       'icon-style': 'inline-block w-25 h-25 cursor-pointer',
       // 菜单栏子项
       'menu-item-style': 'm-4 rounded-8 bg-[#35496E]',
+      // 边框
+      'border-solid-1': 'border-1 border-solid border-[#409eff]',
+      // 渐变效果
+      'transition-default': 'transition-[all] duration-250 ease-linear',
     },
   ],
   theme: {
