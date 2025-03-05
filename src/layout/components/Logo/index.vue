@@ -11,7 +11,7 @@ const { isFold } = storeToRefs(layoutSettingStore)
 
 <template>
   <div h50 flex-center v-show="isShow">
-    <img :src="imgPath" alt="网站图标" />
+    <img :src="imgPath" alt="网站图标" w45 h45 />
     <em text-white text-25 v-show="!isFold">{{ websiteTitle }}</em>
   </div>
 </template>

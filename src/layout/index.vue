@@ -77,7 +77,7 @@ const menuClass = computed(() =>
     <!-- 操作区 -->
     <div flex-1 h-full transition-all>
       <!-- tabbar 栏 -->
-      <header h5 p20 box-border class="b-bottom-1">
+      <header h50 px20 box-border class="b-bottom-1">
         <Tabbar />
       </header>
       <!-- 内容区 -->
