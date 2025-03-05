@@ -69,7 +69,7 @@ const menuClass = computed(() =>
         :collapse="isFold"
         :collapse-transition="false"
         :default-active="$route.path"
-        active-text-color="#3A937E"
+        active-text-color="#fff"
       >
         <MenuItem :userMenuRoutes="userStore.userMenuRoutes" />
       </el-menu>
@@ -98,7 +98,7 @@ const menuClass = computed(() =>
 }
 
 // 样式穿透
-:deep(.el-menu-item.is-active) {
-  @apply menu-item-style;
-}
+// :deep(.el-menu-item.is-active) {
+//   @apply menu-item-style;
+// }
 </style>

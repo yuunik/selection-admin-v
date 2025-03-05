@@ -56,7 +56,6 @@ const route = useRoute()
 const onLogout = async () => {
   try {
     await userStore.fetchLogout()
-    console.log('@@@@@@@@@@@@', userInfo.value)
     // 退出成功, 则跳转登录页面
     router.push({ path: '/login', query: { redirect: route.path } })
   } catch (error) {
