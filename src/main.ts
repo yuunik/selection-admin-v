@@ -11,6 +11,7 @@ import router from '@/router'
 import store from '@/store'
 
 import '@/styles/index.scss'
+import './permission'
 
 const app = createApp(App)
 

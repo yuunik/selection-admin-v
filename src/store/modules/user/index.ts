@@ -11,6 +11,7 @@ const useUserStore = defineStore('userStore', () => {
   // state
   let token = ref<string>(Cookies.get('token') || '')
   let userInfo = reactive<UserType>({
+    id: '',
     userName: '',
     password: '',
     name: '',
