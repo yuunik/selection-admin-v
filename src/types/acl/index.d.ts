@@ -3,7 +3,7 @@
 // 用户角色类型
 export type SysRoleType = {
   // 角色id
-  id: number
+  id?: number
   // 角色创建时间
   createTime: string
   // 角色更新时间
