@@ -36,6 +36,8 @@ export default defineConfig({
     ['wb-menu-width', { width: '250px' }],
     // 菜单栏未折叠宽度
     ['wf-menu-width', { width: '64px' }],
+    // 默认盒子阴影
+    ['shadow-default', { 'box-shadow': '0 0 12px rgba(0, 0, 0, 0.12)' }],
   ],
   // 自定义属性 一个属性可以对应多个 unocss 类值
   shortcuts: [

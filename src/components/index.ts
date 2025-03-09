@@ -2,6 +2,8 @@ import { App, Component } from 'vue'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 import SvgIcon from './SvgIcon/index.vue'
+import CustomIcon from './CustomIcon/index.vue'
+import Pagination from './Pagination/index.vue'
 
 // Declare a global component type
 interface GlobalComponent {
@@ -9,7 +11,11 @@ interface GlobalComponent {
 }
 
 // Register global components
-const registeredComponents: GlobalComponent = { SvgIcon }
+const registeredComponents: GlobalComponent = {
+  SvgIcon,
+  CustomIcon,
+  Pagination,
+}
 
 const globalComponent = {
   install(app: App) {
