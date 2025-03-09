@@ -25,8 +25,6 @@ const roleInfoData = ref<SysRoleType[]>([])
 
 // 获取角色列表
 const getRoleList = async (pageNum = 1) => {
-  console.log(pageNum)
-
   // 默认第一页
   queryParams.pageNum = pageNum
   const {
@@ -40,8 +38,6 @@ const getRoleList = async (pageNum = 1) => {
     roleNameParam,
   )
   if (code === 200) {
-    // 成功提示
-    // ElMessage.success('获取角色列表成功')
     // 设置表格数据
     roleInfoData.value = list
     // 设置总页数
@@ -65,6 +61,10 @@ const handlePageChange = (pageNum: number, pageSize: number) => {
 
 // 角色名称搜索
 const handleSearch = () => {
+  // 非空校验
+  if (!roleNameParam.roleName) {
+    return ElMessage.warning('请输入角色名称')
+  }
   // 重新渲染页面
   getRoleList()
   // 清空搜索框
@@ -73,9 +73,6 @@ const handleSearch = () => {
 
 // 重置搜索条件
 const handleReset = () => {
-  // 重置分页参数
-  queryParams.pageNum = 1
-  queryParams.pageSize = 5
   // 重置搜索条件
   roleNameParam.roleName = ''
   // 重新渲染页面
