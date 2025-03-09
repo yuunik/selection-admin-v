@@ -75,7 +75,7 @@ router.beforeEach(async (to, from, next) => {
 })
 
 // 后置路由守卫
-router.afterEach((to, from, next) => {
+router.afterEach(() => {
   // 关闭进度条
   NProgress.done()
 })

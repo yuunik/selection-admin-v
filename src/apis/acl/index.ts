@@ -2,7 +2,7 @@
  * ACL API
  */
 
-import type { PageParamsType, PageType, ResType } from '@/types'
+import type { PageType, ResType } from '@/types'
 import type { SysRoleSearchParams, SysRoleType } from '@/types/acl'
 import { request } from '@/utils'
 

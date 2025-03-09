@@ -7,7 +7,6 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store'
 import type { LoginReqType } from '@/types/login/index.d.ts'
 import { generateCaptchaApi } from '@/apis/login'
-import { greeting } from '@/utils'
 
 // 登录方式
 const loginType = ref('password')
@@ -65,7 +64,7 @@ const login = async () => {
       loginForm.codeKey = codeKey.value
     }
     // 表单校验成功后的逻辑
-    const res = await userStore.fetchLogin(loginForm)
+    await userStore.fetchLogin(loginForm)
     // 登录成功
     ElMessage.success('登录成功')
     // 跳转到首页
