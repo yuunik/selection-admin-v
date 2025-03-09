@@ -5,11 +5,11 @@ export type SysRoleType = {
   // 角色id
   id?: number
   // 角色创建时间
-  createTime: string
+  createTime?: string
   // 角色更新时间
-  updateTime: string
+  updateTime?: string
   // 角色是否删除
-  isDeleted: number
+  isDeleted?: number
   // 角色名称
   roleName: string
   // 角色编码

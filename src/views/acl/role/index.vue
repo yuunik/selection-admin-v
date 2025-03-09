@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 import type { SysRoleType } from '@/types/acl'
-import { addRoleApi, editRoleApi, pageRoleApi } from '@/apis/acl'
+import { addRoleApi, deleteRoleApi, editRoleApi, pageRoleApi } from '@/apis/acl'
 
 // 分页参数
 const queryParams = reactive({
@@ -17,11 +17,18 @@ const roleNameParam = reactive({
   roleName: '',
 })
 
+// 用户信息
+const role = reactive<SysRoleType>({} as SysRoleType)
+
 // 表格数据
 const roleInfoData = ref<SysRoleType[]>([])
 
 // 获取角色列表
-const getRoleList = async () => {
+const getRoleList = async (pageNum = 1) => {
+  console.log(pageNum)
+
+  // 默认第一页
+  queryParams.pageNum = pageNum
   const {
     data: {
       code,
@@ -48,12 +55,12 @@ onMounted(() => {
 })
 
 // 页码或每页显示条数改变时, 获取角色列表
-const handlePageChange = (currentPage: number, pageSize: number) => {
+const handlePageChange = (pageNum: number, pageSize: number) => {
   // 更新分页参数
-  queryParams.pageNum = currentPage
+  // queryParams.pageNum = currentPage
   queryParams.pageSize = pageSize
   // 重新渲染页面
-  getRoleList()
+  getRoleList(pageNum)
 }
 
 // 角色名称搜索
@@ -78,10 +85,20 @@ const handleReset = () => {
 // 角色信息弹窗的可见性
 const addRoleModalVisible = ref(false)
 // 打开角色信息弹窗
-const openAddRoleModal = () => (addRoleModalVisible.value = true)
-
-// 用户信息
-const role = reactive<SysRoleType>({} as SysRoleType)
+const openAddRoleModal = () => {
+  // 重置角色信息
+  Object.assign(role, {
+    id: undefined,
+    roleName: '',
+    roleCode: '',
+    description: '',
+    createTime: '',
+    updateTime: '',
+    isDeleted: undefined,
+  } as SysRoleType)
+  // 打开弹窗
+  addRoleModalVisible.value = true
+}
 
 // 新增角色
 const addRole = async () => {
@@ -130,6 +147,29 @@ const openEditRoleModal = (row: SysRoleType) => {
   Object.assign(role, row)
   // 打开弹窗
   addRoleModalVisible.value = true
+}
+
+// 删除角色
+const handleDeleteRole = async (row: SysRoleType) => {
+  try {
+    await ElMessageBox.confirm(`是否确认删除角色【${row.roleName}】?`, '提示', {
+      confirmButtonText: '确认',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+    // 确认删除
+    const {
+      data: { code },
+    } = await deleteRoleApi(row.id as number)
+    if (code === 200) {
+      // 成功提示
+      ElMessage.success('删除成功')
+      // 重新渲染页面
+      getRoleList()
+    }
+  } catch (err) {
+    ElMessage.error('删除失败')
+  }
 }
 </script>
 
@@ -188,7 +228,9 @@ const openEditRoleModal = (row: SysRoleType) => {
             <el-button type="primary" link @click="openEditRoleModal(row)">
               编辑
             </el-button>
-            <el-button type="danger" link>删除</el-button>
+            <el-button type="danger" link @click="handleDeleteRole(row)">
+              删除
+            </el-button>
           </template>
         </el-table-column>
         <!-- 空数据模板 -->
