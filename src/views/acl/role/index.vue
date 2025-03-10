@@ -192,7 +192,7 @@ const handleDeleteRole = async (row: SysRoleType) => {
       </el-form>
     </div>
     <!-- 表格 -->
-    <div mt20 shadow-default p20 rounded-4>
+    <div mt20 shadow-default rounded-4 relative px20 pt20 pb40>
       <!-- 添加角色按钮 -->
       <el-button type="primary" icon="Plus" @click="openAddRoleModal">
         添加角色

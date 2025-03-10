@@ -60,6 +60,8 @@ export default defineConfig({
       'border-solid-1': 'border-1 border-solid border-[#409eff]',
       // 渐变效果
       'transition-default': 'transition-[all] duration-250 ease-linear',
+      // 绝对定位靠右
+      'absolute-right': 'absolute right-20 bottom-10',
     },
   ],
   theme: {

@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { useLayoutSettingStore, useUserStore } from '@/store'
+import { useDark, useToggle } from '@vueuse/core'
 import { ElMessage } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+
+import { useLayoutSettingStore, useUserStore } from '@/store'
 
 // 获取修改刷新状态的方法
 const { changeIsRefresh } = useLayoutSettingStore()
@@ -63,6 +65,10 @@ const onLogout = async () => {
     ElMessage.error((error as Error).message)
   }
 }
+
+// 暗黑模式
+const isDark = useDark()
+const toggleDark = useToggle(isDark)
 </script>
 
 <template>

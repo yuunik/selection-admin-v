@@ -30,8 +30,7 @@ withDefaults(defineProps<Props>(), {
       layout="total, sizes, prev, pager, next, jumper"
       :total="queryParams.pageTotal"
       @change="handlePageChange"
+      absolute-right
     />
   </el-config-provider>
 </template>
-
-<style lang="scss" setup></style>
