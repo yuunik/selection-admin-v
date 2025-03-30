@@ -59,6 +59,15 @@ const createTime = computed({
 })
 
 const handlePageUserBySearch = () => getUserList()
+
+const handleReset = () => {
+  // 重置表单
+  queryParam.keyword = ''
+  queryParam.createTimeBegin = ''
+  queryParam.createTimeEnd = ''
+  // 重新渲染
+  getUserList()
+}
 </script>
 
 <template>
@@ -87,7 +96,9 @@ const handlePageUserBySearch = () => getUserList()
           >
             搜索
           </el-button>
-          <el-button type="default" icon="Refresh">重置</el-button>
+          <el-button type="default" icon="Refresh" @click="handleReset">
+            重置
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
