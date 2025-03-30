@@ -32,6 +32,7 @@ export default defineConfig({
     [/^hp([\.\d]+)$/, ([_, num]) => ({ height: `${num}%` })],
     // calc 函数写法
     [/^hc([\.\d]+)$/, ([_, num]) => ({ height: `calc(100% - ${num}px)` })],
+    [/^wc([\.\d]+)$/, ([_, num]) => ({ width: `calc(100% - ${num}px)` })],
     // 菜单栏未折叠宽度
     ['wb-menu-width', { width: '250px' }],
     // 菜单栏未折叠宽度

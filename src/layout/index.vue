@@ -51,6 +51,8 @@ const { isFold } = storeToRefs(layoutSettingStore)
 const menuClass = computed(() =>
   isFold.value ? 'wf-menu-width' : 'wb-menu-width',
 )
+// 操作区类名
+const opClass = computed(() => (isFold.value ? 'wc64' : 'wc250'))
 </script>
 
 <template>
@@ -75,7 +77,7 @@ const menuClass = computed(() =>
       </el-menu>
     </nav>
     <!-- 操作区 -->
-    <div flex-1 h-full transition-all>
+    <div :class="opClass" h-full transition-all>
       <!-- tabbar 栏 -->
       <header h50 px20 box-border class="b-bottom-1">
         <Tabbar />

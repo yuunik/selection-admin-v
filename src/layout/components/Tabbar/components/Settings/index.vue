@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useDark, useToggle } from '@vueuse/core'
 import { ElMessage } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { onMounted, onUnmounted, ref } from 'vue'
@@ -65,10 +64,6 @@ const onLogout = async () => {
     ElMessage.error((error as Error).message)
   }
 }
-
-// 暗黑模式
-const isDark = useDark()
-const toggleDark = useToggle(isDark)
 </script>
 
 <template>
@@ -119,6 +114,7 @@ const toggleDark = useToggle(isDark)
       active:block
       active:rounded-8
       transition-default
+      z999
     />
     <!-- 用户退出模块 -->
     <el-dropdown ml12>

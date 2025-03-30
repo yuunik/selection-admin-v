@@ -14,9 +14,11 @@ interface Props {
 }
 
 // 定义默认参数
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   pageSizeOptions: () => [1, 3, 5, 7, 9],
 })
+
+console.log('queryParams', props.queryParams)
 </script>
 
 <template>
