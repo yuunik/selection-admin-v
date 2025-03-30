@@ -2,7 +2,11 @@
  * role API
  */
 import type { PageType, ResType } from '@/types'
-import type { SysRoleSearchParams, SysRoleType } from '@/types/acl'
+import type {
+  SysRoleSearchParams,
+  SysRoleType,
+  UserRoleInfoType,
+} from '@/types/acl'
 import { request } from '@/utils'
 
 // 请求地址
@@ -11,6 +15,8 @@ enum ACL_API {
   ADD_URL = '/admin/system/role/addRole',
   DELETE_URL = '/admin/system/role/deleteRole',
   EDIT_URL = '/admin/system/role/updateRole',
+  // 查询所有角色及用户所拥有的角色信息
+  ALL_ROLE_URL = '/admin/system/role/getUserRoleList',
 }
 
 // 分页查询用户角色列表
@@ -46,4 +52,11 @@ export const editRoleApi = (role: SysRoleType) =>
     url: ACL_API.EDIT_URL,
     method: 'PUT',
     data: role,
+  })
+
+// 查询所有角色及用户所拥有的角色信息
+export const getAllRoleApi = (userId: number) =>
+  request<ResType<UserRoleInfoType>>({
+    url: ACL_API.ALL_ROLE_URL + `/${userId}`,
+    method: 'GET',
   })

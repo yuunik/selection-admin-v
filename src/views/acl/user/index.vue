@@ -1,13 +1,23 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import type { UploadProps } from 'element-plus'
-
-import type { PageParamsType, ResType } from '@/types'
-import { addUserApi, pageUserListApi, updateUserApi } from '@/apis/acl'
-import type { SysUserSearchParams } from '@/types/acl'
-import type { UserType } from '@/types/login'
+import type {
+  CheckboxProps,
+  CheckboxValueType,
+  UploadProps,
+} from 'element-plus'
 import Cookies from 'js-cookie'
+
+import type { PageParamsType } from '@/types'
+import {
+  addUserApi,
+  assignRoleApi,
+  getAllRoleApi,
+  pageUserListApi,
+  updateUserApi,
+} from '@/apis/acl'
+import type { SysRoleType, SysUserSearchParams } from '@/types/acl'
+import type { UserType } from '@/types/login'
 
 // 用户数据列表
 const userTableData = ref<UserType[]>([])
@@ -63,8 +73,10 @@ const createTime = computed({
   },
 })
 
+// 条件搜索
 const handlePageUserBySearch = () => getUserList()
 
+// 重置条件搜索
 const handleReset = () => {
   // 重置表单
   queryParam.keyword = ''
@@ -174,6 +186,80 @@ const handleEditUser = async () => {
     getUserList()
   }
 }
+
+// 分配角色弹窗状态
+const assignRoleDialogVisible = ref(false)
+
+// 角色列表
+const roleList = ref<SysRoleType[]>([])
+// 所选择的角色id列表
+const selectedRoleIdList = ref<number[]>([])
+// 角色选择变化
+const handleCheckedRoleChange = (val: CheckboxValueType[]) =>
+  (selectedRoleIdList.value = val as number[])
+
+// 全选
+const checkAll = computed({
+  get: () => selectedRoleIdList.value.length === roleList.value.length,
+  set: (val) => {
+    if (val) {
+      selectedRoleIdList.value = roleList.value.map((role) => role.id as number)
+    } else {
+      selectedRoleIdList.value = []
+    }
+  },
+})
+
+// 全选状态
+const indeterminate = computed(
+  () =>
+    selectedRoleIdList.value.length > 0 &&
+    selectedRoleIdList.value.length < roleList.value.length,
+)
+
+// 打开分配角色弹窗
+const openAssignRoleDialog = (row: UserType) => {
+  // 回显数据
+  Object.assign(userInfo, row)
+  // 请求角色列表及已分配角色
+  getRoleList(userInfo.id)
+  // 打开弹窗
+  assignRoleDialogVisible.value = true
+}
+
+// 请求角色列表及已分配角色
+const getRoleList = async (userId: number) => {
+  const {
+    data: {
+      code,
+      data: { sysRoleList, userRoleIdList },
+    },
+  } = await getAllRoleApi(userId)
+  if (code === 200) {
+    // 请求成功
+    // 回显角色列表及已分配角色
+    roleList.value = sysRoleList
+    selectedRoleIdList.value = userRoleIdList
+  }
+}
+
+// 为用户分配角色
+const handleAssignRole = async () => {
+  const {
+    data: { code },
+  } = await assignRoleApi({
+    userId: userInfo.id,
+    roleIdList: selectedRoleIdList.value,
+  })
+  if (code === 200) {
+    // 分配角色成功
+    ElMessage.success('分配角色成功')
+    // 关闭弹窗
+    assignRoleDialogVisible.value = false // 关闭弹窗
+    // 刷新用户列表
+    getUserList() // 刷新用户列表
+  }
+}
 </script>
 
 <template>
@@ -233,7 +319,9 @@ const handleEditUser = async () => {
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template #default="{ row }">
-            <el-button type="warning" link>分配角色</el-button>
+            <el-button type="warning" link @click="openAssignRoleDialog(row)">
+              分配角色
+            </el-button>
             <el-button type="primary" link @click="openEditUserDialog(row)">
               编辑
             </el-button>
@@ -250,7 +338,7 @@ const handleEditUser = async () => {
     <!-- 弹窗区 -->
     <el-dialog
       v-model="userDialogVisible"
-      title="分配角色"
+      :title="userInfo.id ? '编辑用户' : '新增用户'"
       align-center
       width="520"
     >
@@ -320,6 +408,51 @@ const handleEditUser = async () => {
           取消
         </el-button>
         <el-button type="primary" @click="handleSubmit">确认</el-button>
+      </template>
+    </el-dialog>
+    <!-- 分配角色弹窗 -->
+    <el-dialog
+      v-model="assignRoleDialogVisible"
+      title="分配角色"
+      align-center
+      width="520"
+    >
+      <el-form label-width="80px">
+        <el-form-item label="用户名">
+          <el-input :value="userInfo.userName" disabled />
+        </el-form-item>
+        <el-form-item label="角色">
+          <el-checkbox-group
+            v-model="selectedRoleIdList"
+            @change="handleCheckedRoleChange"
+          >
+            <el-checkbox
+              v-for="role in roleList"
+              :key="role.id"
+              :label="role.roleName"
+              :value="role.id"
+            />
+          </el-checkbox-group>
+          <!-- 分割线 -->
+          <el-divider />
+          <!-- 全选 -->
+          <el-checkbox v-model="checkAll" :indeterminate="indeterminate">
+            全选
+          </el-checkbox>
+        </el-form-item>
+      </el-form>
+      <!-- 按钮区 -->
+      <template #footer>
+        <el-button type="default" @click="assignRoleDialogVisible = false">
+          取消
+        </el-button>
+        <el-button
+          type="primary"
+          @click="handleAssignRole"
+          :disabled="selectedRoleIdList.length === 0"
+        >
+          确认
+        </el-button>
       </template>
     </el-dialog>
   </div>

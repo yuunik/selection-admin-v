@@ -62,6 +62,6 @@ export const deleteUserApi = (id: string) =>
 export const assignRoleApi = (queryParams: SysUserRoleType) =>
   request<ResType<object>>({
     url: UserApi.ASSIGN_ROLE_URL,
-    method: 'PUT',
+    method: 'POST',
     data: queryParams,
   })

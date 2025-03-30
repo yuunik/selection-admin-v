@@ -29,7 +29,7 @@ export type CaptchaType = {
 // 用户信息参数类型
 export type UserType = {
   // 用户 id
-  id: string
+  id: number
   // 用户名
   userName: string
   // 密码
