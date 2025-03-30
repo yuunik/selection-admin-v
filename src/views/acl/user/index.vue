@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import type {
   CheckboxProps,
   CheckboxValueType,
@@ -12,6 +12,7 @@ import type { PageParamsType } from '@/types'
 import {
   addUserApi,
   assignRoleApi,
+  deleteUserApi,
   getAllRoleApi,
   pageUserListApi,
   updateUserApi,
@@ -260,6 +261,30 @@ const handleAssignRole = async () => {
     getUserList() // 刷新用户列表
   }
 }
+
+// 删除用户
+const handleDeleteUser = async (id: number) => {
+  try {
+    await ElMessageBox.confirm('确认删除该用户？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+    // 确认删除
+    const {
+      data: { code },
+    } = await deleteUserApi(id)
+    if (code === 200) {
+      // 删除成功
+      ElMessage.success('删除成功')
+      // 刷新用户列表
+      getUserList()
+    }
+  } catch (error) {
+    // 错误提示
+    ElMessage.error('删除失败')
+  }
+}
 </script>
 
 <template>
@@ -325,7 +350,9 @@ const handleAssignRole = async () => {
             <el-button type="primary" link @click="openEditUserDialog(row)">
               编辑
             </el-button>
-            <el-button type="danger" link>删除</el-button>
+            <el-button type="danger" link @click="handleDeleteUser(row.id)">
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>

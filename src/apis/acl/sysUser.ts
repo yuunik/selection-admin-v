@@ -52,7 +52,7 @@ export const updateUserApi = (data: UserType) =>
   })
 
 // 删除用户信息
-export const deleteUserApi = (id: string) =>
+export const deleteUserApi = (id: number) =>
   request<ResType<object>>({
     url: UserApi.DELETE_USER_URL + `/${id}`,
     method: 'DELETE',
