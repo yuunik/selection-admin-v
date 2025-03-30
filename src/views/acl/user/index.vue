@@ -17,9 +17,11 @@ const pageParams = reactive<PageParamsType>({
 })
 
 // 处理分页器变化
-const handlePageChange = (currentPage: number, pageSize: number) => {
-  pageParams.pageNum = currentPage
+const handlePageChange = (pageNum: number, pageSize: number) => {
+  pageParams.pageNum = pageNum
   pageParams.pageSize = pageSize
+  // 请求用户数据列表
+  getUserList(pageNum)
 }
 
 // 分页查询用户列表的请求参数
@@ -116,7 +118,7 @@ const handleReset = () => {
         <el-table-column prop="status" label="状态" align="center" width="100">
           <template #default="{ row }">
             <el-tag
-              :type="row.status === 1 ? 'success' : 'warning'"
+              :type="row.status === 1 ? 'success' : 'danger'"
               size="small"
             >
               {{ row.status === 1 ? '正常' : '停用' }}
