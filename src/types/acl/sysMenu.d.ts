@@ -5,23 +5,23 @@
 // 菜单类型
 export type SysMenuType = {
   // 菜单ID
-  id: number
+  id?: number
   // 菜单创建时间
-  createTime: string
+  createTime?: string
   // 菜单更新时间
-  updateTime: string
+  updateTime?: string
   // 是否删除
-  isDeleted: number
+  isDeleted?: number
   // 父菜单ID
-  parentId: number
+  parentId?: number
   // 菜单名称
   title: string
   // 路由名称
   component: string
   // 排序
-  sortValue: number
+  sortValue: number | undefined
   // 菜单状态
-  status: number
+  status: number | undefined
   // 菜单子项
-  children: SysMenuType[]
+  children?: SysMenuType[]
 }
