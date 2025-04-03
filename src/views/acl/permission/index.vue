@@ -38,8 +38,12 @@ const menuFormData = reactive<SysMenuType>({
   status: undefined,
 })
 
+// 菜单标题
+const menuTitle = ref('')
+
 // 打开添加菜单弹窗
 const openAddMenuDialog = () => {
+  menuTitle.value = '新增菜单'
   // 重置表单数据
   Object.assign(menuFormData, {
     id: undefined,
@@ -61,6 +65,7 @@ const openAddMenuDialog = () => {
 
 // 打开添加子菜单弹窗
 const openAddChildrenMenu = (id: number) => {
+  menuTitle.value = '新增子菜单'
   // 重置表单数据
   Object.assign(menuFormData, {
     id: undefined,
@@ -95,6 +100,7 @@ const handleAddMenu = async () => {
 
 // 打开编辑菜单弹窗
 const openEditMenu = (menu: SysMenuType) => {
+  menuTitle.value = '编辑菜单'
   // 数据回显
   Object.assign(menuFormData, menu)
   // 打开弹窗
@@ -135,17 +141,11 @@ const handleDeleteMenu = async (id: number) => {
   }
 }
 
-// 添加子菜单
-const handleAddChildrenMenu = () => {}
-
 // 提交菜单
 const handleSubmitMenu = () => {
   if (menuFormData.id) {
     // 编辑菜单
     handleEditMenu()
-  } else if (menuFormData.parentId) {
-    // 添加子菜单
-    handleAddChildrenMenu()
   } else {
     // 添加菜单
     handleAddMenu()
@@ -207,7 +207,7 @@ const handleSubmitMenu = () => {
     <!-- 菜单表单 -->
     <el-dialog
       v-model="menuDialogVisible"
-      title="添加菜单"
+      :title="menuTitle"
       align-center
       width="520"
     >

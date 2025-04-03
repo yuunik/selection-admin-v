@@ -15,9 +15,9 @@ withDefaults(defineProps<Props>(), {
   height: '16px',
 })
 </script>
+
 <template>
   <svg :style="{ width, height }">
     <use :xlink:href="`#${prefix}-${iconName}`" :fill="color" />
   </svg>
 </template>
-<style scoped lang="sass"></style>
