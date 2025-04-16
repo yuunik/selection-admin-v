@@ -1,9 +1,18 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ref, reactive, onMounted, computed } from 'vue'
+import { ElMessage, ElMessageBox, ElTreeV2, progressProps } from 'element-plus'
 
-import type { SysRoleType } from '@/types/acl'
-import { addRoleApi, deleteRoleApi, editRoleApi, pageRoleApi } from '@/apis/acl'
+import { SelectedMenuType, SysMenuType, type SysRoleType } from '@/types/acl'
+import {
+  addRoleApi,
+  assignRolePermissionApi,
+  deleteRoleApi,
+  editRoleApi,
+  getMenuListApi,
+  getRoleMenuByRoleIdApi,
+  pageRoleApi,
+} from '@/apis/acl'
+import { de, tr } from 'element-plus/es/locales.mjs'
 
 // 分页参数
 const queryParams = reactive({
@@ -168,6 +177,101 @@ const handleDeleteRole = async (row: SysRoleType) => {
     ElMessage.error('删除失败')
   }
 }
+
+// 角色权限弹窗状态
+const assginRoleMenuVisible = ref(false)
+
+const props = {
+  label: 'title',
+  value: 'id',
+  children: 'children',
+}
+
+const menuTreeData = ref<SysMenuType[]>([])
+const roleMenuIdList = ref<number[]>([])
+
+const defaultSeletedKeys = ref<number[]>([])
+const defaultExpandedKeys = ref<number[]>([])
+const childrenKeys = ref<number[]>([])
+const getRoleMenuList = async (roleId: number) => {
+  const {
+    data: {
+      code,
+      data: { sysMenuList, roleMenuIdList: roleMenuIds },
+    },
+  } = await getRoleMenuByRoleIdApi(roleId)
+  if (code === 200) {
+    // 菜单权限列表1
+    menuTreeData.value = sysMenuList
+    childrenKeys.value = filterMenuList(menuTreeData.value, [])
+    // 已分配权限列表
+    roleMenuIdList.value = roleMenuIds
+  }
+}
+
+const selectedKeys = computed(() =>
+  roleMenuIdList.value.filter((item) => childrenKeys.value.includes(item)),
+)
+
+const expandedKeys = computed(() =>
+  roleMenuIdList.value.filter((item) => !childrenKeys.value.includes(item)),
+)
+
+// 获取底层菜单列表
+const filterMenuList = (menuList: SysMenuType[], initArr: number[]) => {
+  menuList.forEach((item) => {
+    if (item.children && item.children.length === 0) {
+      initArr.push(item.id as number)
+    }
+    if (item.children && item.children.length > 0) {
+      filterMenuList(item.children, initArr)
+    }
+  })
+  return initArr
+}
+
+const assignRoleId = ref(0)
+const openAssignRoleMenuModal = (roleId: number) => {
+  assignRoleId.value = roleId
+  // 获取角色所有的菜单权限
+  getRoleMenuList(roleId)
+  // 打开弹窗
+  assginRoleMenuVisible.value = true
+}
+
+const treeRef = ref<InstanceType<typeof ElTreeV2>>(
+  {} as InstanceType<typeof ElTreeV2>,
+)
+// 为角色分配权限
+const handleAssignRoleMenu = async () => {
+  const checkedKey = treeRef.value.getCheckedKeys()
+  const halfCheckedKey = treeRef.value.getHalfCheckedKeys()
+
+  const checkedKeyIds: SelectedMenuType[] = checkedKey.map(
+    (item) =>
+      ({
+        id: item,
+        isHalf: 0,
+      }) as SelectedMenuType,
+  )
+  const halfCheckedKeyIds: SelectedMenuType[] = halfCheckedKey.map(
+    (item) =>
+      ({
+        id: item,
+        isHalf: 1,
+      }) as SelectedMenuType,
+  )
+  const allCheckedKeyIds = [...checkedKeyIds, ...halfCheckedKeyIds]
+  const {
+    data: { code },
+  } = await assignRolePermissionApi(assignRoleId.value, allCheckedKeyIds)
+  if (code === 200) {
+    // 成功提示
+    ElMessage.success('分配权限成功')
+    // 关闭弹窗
+    assginRoleMenuVisible.value = false
+  }
+}
 </script>
 
 <template>
@@ -222,6 +326,13 @@ const handleDeleteRole = async (row: SysRoleType) => {
         ></el-table-column>
         <el-table-column label="操作" align="center">
           <template #default="{ row }: { row: SysRoleType }">
+            <el-button
+              type="success"
+              link
+              @click="openAssignRoleMenuModal(row.id as number)"
+            >
+              分配权限
+            </el-button>
             <el-button type="primary" link @click="openEditRoleModal(row)">
               编辑
             </el-button>
@@ -257,6 +368,27 @@ const handleDeleteRole = async (row: SysRoleType) => {
       <template #footer>
         <el-button type="primary" @click="handleSaveRole">保存</el-button>
         <el-button @click="addRoleModalVisible = false">取消</el-button>
+      </template>
+    </el-dialog>
+    <!-- 用户权限弹窗 -->
+    <el-dialog
+      title="分配权限"
+      v-model="assginRoleMenuVisible"
+      width="500"
+      align-center
+    >
+      <el-tree-v2
+        style="max-width: 600px"
+        :data="menuTreeData"
+        :props="props"
+        :height="500"
+        show-checkbox
+        :default-checked-keys="selectedKeys"
+        ref="treeRef"
+      />
+      <template #footer>
+        <el-button type="primary" @click="handleAssignRoleMenu">确认</el-button>
+        <el-button @click="assginRoleMenuVisible = false">取消</el-button>
       </template>
     </el-dialog>
   </div>
