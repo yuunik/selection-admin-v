@@ -6,7 +6,7 @@ const constantRoutes: RouteRecordRaw[] = [
     path: '/',
     component: () => import('@/layout/index.vue'),
     redirect: '/home',
-    name: 'layout',
+    name: 'Layout',
     children: [
       {
         path: '/home',
@@ -134,7 +134,7 @@ const constantRoutes: RouteRecordRaw[] = [
   {
     path: '/login',
     component: () => import('@/views/login/index.vue'),
-    name: 'login',
+    name: 'Login',
     meta: {
       title: '登录页',
       isShow: false,
@@ -152,7 +152,7 @@ const constantRoutes: RouteRecordRaw[] = [
   {
     path: '/:pathMatch(.*)*',
     redirect: '/404',
-    name: 'any',
+    name: 'Any',
     meta: {
       title: '任意页',
       isShow: false,

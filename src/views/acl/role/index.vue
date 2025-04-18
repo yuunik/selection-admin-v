@@ -8,11 +8,9 @@ import {
   assignRolePermissionApi,
   deleteRoleApi,
   editRoleApi,
-  getMenuListApi,
   getRoleMenuByRoleIdApi,
   pageRoleApi,
 } from '@/apis/acl'
-import { de, tr } from 'element-plus/es/locales.mjs'
 
 // 分页参数
 const queryParams = reactive({
@@ -189,9 +187,6 @@ const props = {
 
 const menuTreeData = ref<SysMenuType[]>([])
 const roleMenuIdList = ref<number[]>([])
-
-const defaultSeletedKeys = ref<number[]>([])
-const defaultExpandedKeys = ref<number[]>([])
 const childrenKeys = ref<number[]>([])
 const getRoleMenuList = async (roleId: number) => {
   const {
@@ -270,6 +265,8 @@ const handleAssignRoleMenu = async () => {
     ElMessage.success('分配权限成功')
     // 关闭弹窗
     assginRoleMenuVisible.value = false
+    // 页面刷新
+    window.location.reload()
   }
 }
 </script>
