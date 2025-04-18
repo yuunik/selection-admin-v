@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, computed } from 'vue'
-import { ElMessage, ElMessageBox, ElTreeV2, progressProps } from 'element-plus'
+import { ElMessage, ElMessageBox, ElTreeV2 } from 'element-plus'
 
 import { SelectedMenuType, SysMenuType, type SysRoleType } from '@/types/acl'
 import {
@@ -206,10 +206,6 @@ const getRoleMenuList = async (roleId: number) => {
 
 const selectedKeys = computed(() =>
   roleMenuIdList.value.filter((item) => childrenKeys.value.includes(item)),
-)
-
-const expandedKeys = computed(() =>
-  roleMenuIdList.value.filter((item) => !childrenKeys.value.includes(item)),
 )
 
 // 获取底层菜单列表

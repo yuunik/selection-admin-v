@@ -1,4 +1,4 @@
-import { createApp, h } from 'vue'
+import { createApp } from 'vue'
 // svg icon support
 import 'virtual:svg-icons-register'
 import 'element-plus/dist/index.css'

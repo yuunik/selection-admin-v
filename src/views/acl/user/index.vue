@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import type {
-  CheckboxProps,
-  CheckboxValueType,
-  UploadProps,
-} from 'element-plus'
+import type { CheckboxValueType, UploadProps } from 'element-plus'
 import Cookies from 'js-cookie'
 
 import type { PageParamsType } from '@/types'
@@ -94,7 +90,7 @@ const userDialogVisible = ref(false)
 const openAddUserDialog = () => {
   // 重置表单
   Object.assign(userInfo, {
-    id: '',
+    id: undefined,
     userName: '',
     name: '',
     phone: '',
@@ -223,7 +219,7 @@ const openAssignRoleDialog = (row: UserType) => {
   // 回显数据
   Object.assign(userInfo, row)
   // 请求角色列表及已分配角色
-  getRoleList(userInfo.id)
+  getRoleList(userInfo.id as number)
   // 打开弹窗
   assignRoleDialogVisible.value = true
 }
@@ -249,7 +245,7 @@ const handleAssignRole = async () => {
   const {
     data: { code },
   } = await assignRoleApi({
-    userId: userInfo.id,
+    userId: userInfo.id as number,
     roleIdList: selectedRoleIdList.value,
   })
   if (code === 200) {
