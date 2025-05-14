@@ -8,6 +8,8 @@ import { useLayoutSettingStore } from '@/store'
 const iconClass = computed(() => (isFold.value ? 'i-ep:expand' : 'i-ep:fold'))
 const layoutSettingStore = useLayoutSettingStore()
 const { isFold } = storeToRefs(layoutSettingStore)
+
+console.log('测试提交')
 </script>
 
 <template>
