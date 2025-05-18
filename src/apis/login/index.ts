@@ -3,7 +3,7 @@ import type {
   CaptchaType,
   LoginReqType,
   LoginResType,
-  UserType,
+  PersonalDataType,
 } from '@/types/login'
 import type { ResType } from '@/types'
 
@@ -32,7 +32,7 @@ export const generateCaptchaApi = () =>
 
 // 获取用户信息
 export const getUserInfoApi = () =>
-  request<ResType<UserType>>({
+  request<ResType<PersonalDataType>>({
     url: LoginApi.GET_USER_INFO,
     method: 'get',
   })

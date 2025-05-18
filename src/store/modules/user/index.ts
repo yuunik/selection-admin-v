@@ -42,11 +42,15 @@ const useUserStore = defineStore('userStore', () => {
   // 获取用户信息
   const fetchUserInfo = async () => {
     const {
-      data: { code, data, message },
+      data: {
+        code,
+        data: { userInfo: info, buttonList, roleList, routeList },
+        message,
+      },
     } = await getUserInfoApi()
     if (code === 200) {
       // set userInfo
-      Object.assign(userInfo, data)
+      Object.assign(userInfo, info)
     } else {
       return Promise.reject(new Error(message))
     }

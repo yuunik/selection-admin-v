@@ -45,3 +45,15 @@ export type UserType = {
   // 用户状态(1:正常,0:停用)
   status: number
 }
+
+// 用户相关信息参数类型
+export type PersonalDataType = {
+  // 用户信息
+  userInfo: UserType
+  // 按钮权限列表
+  buttonList: string[]
+  // 角色列表
+  roleList: string[]
+  // 路由列表
+  routeList: string[]
+}
