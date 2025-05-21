@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import constantRoutes from './routes'
+import { constantRoutes, asyncRoutes, anyRoutes } from './routes'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: constantRoutes,
+  routes: [...constantRoutes, ...asyncRoutes, ...anyRoutes],
   // scroll behavior
   scrollBehavior: () => ({ top: 0, left: 0 }),
 })

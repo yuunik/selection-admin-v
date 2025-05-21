@@ -261,6 +261,8 @@ const handleAssignRoleMenu = async () => {
     ElMessage.success('分配权限成功')
     // 关闭弹窗
     assginRoleMenuVisible.value = false
+    // reset
+    roleMenuIdList.value = []
     // 页面刷新
     window.location.reload()
   }

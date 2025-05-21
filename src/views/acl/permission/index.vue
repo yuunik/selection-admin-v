@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 import {
@@ -12,6 +12,15 @@ import type { SysMenuType } from '@/types/acl'
 
 // 权限数据列表
 const menuTableData = ref<SysMenuType[]>([])
+
+// 是否为编辑模式
+const isEditMode = computed(() => menuFormData.id)
+
+// 是否为添加模式
+const isAddMode = computed(() => menuFormData.parentId === 0)
+
+// 是否为添加子菜单模式
+const isAddSubMode = computed(() => menuFormData.parentId !== 0)
 
 // 获取权限列表
 const getMenuList = async () => {
@@ -181,26 +190,35 @@ const handleSubmitMenu = () => {
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" align="center" />
       <el-table-column label="操作">
-        <template #default="{ row }">
-          <el-button
-            type="success"
-            link
-            icon="Plus"
-            @click="openAddChildrenMenu(row.id)"
-          >
-            添加菜单
-          </el-button>
-          <el-button type="primary" link icon="Edit" @click="openEditMenu(row)">
-            编辑
-          </el-button>
-          <el-button
-            type="danger"
-            link
-            icon="Delete"
-            @click="handleDeleteMenu(row.id)"
-          >
-            删除
-          </el-button>
+        <template #default="{ row }: { row: SysMenuType }">
+          <div flex gap10>
+            <el-button
+              type="success"
+              link
+              icon="Plus"
+              @click="openAddChildrenMenu(row.id as number)"
+              v-has="row.level"
+              v-color="row.level"
+            >
+              {{ row.level === 2 ? '添加功能 ' : '添加子菜单' }}
+            </el-button>
+            <el-button
+              type="primary"
+              link
+              icon="Edit"
+              @click="openEditMenu(row)"
+            >
+              编辑
+            </el-button>
+            <el-button
+              type="danger"
+              link
+              icon="Delete"
+              @click="handleDeleteMenu(row.id as number)"
+            >
+              删除
+            </el-button>
+          </div>
         </template>
       </el-table-column>
     </el-table>

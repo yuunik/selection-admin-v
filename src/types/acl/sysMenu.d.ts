@@ -24,4 +24,6 @@ export type SysMenuType = {
   status: number | undefined
   // 菜单子项
   children?: SysMenuType[]
+  // 菜单层级
+  level: number
 }

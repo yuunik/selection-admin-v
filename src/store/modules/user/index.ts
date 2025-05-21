@@ -5,7 +5,18 @@ import type { RouteRecordRaw } from 'vue-router'
 
 import { getUserInfoApi, loginApi, logoutApi } from '@/apis/login'
 import type { LoginReqType, UserType } from '@/types/login'
-import constantRoutes from '@/router/routes'
+import { asyncRoutes, constantRoutes, anyRoutes } from '@/router/routes'
+
+// 过滤异步路由
+const filterAsyncRoutes = (
+  asyncRoutes: RouteRecordRaw[],
+  userAccessRoutes: string[],
+) =>
+  asyncRoutes.filter((asyncRoute) => {
+    if (userAccessRoutes.includes(asyncRoute.name as string)) {
+      return true
+    }
+  })
 
 const useUserStore = defineStore('userStore', () => {
   // state
@@ -21,7 +32,11 @@ const useUserStore = defineStore('userStore', () => {
     status: 0,
   })
   // 用户菜单权限
-  const userMenuRoutes = ref<RouteRecordRaw[]>(constantRoutes)
+  const userMenuRoutes = ref<RouteRecordRaw[]>([
+    ...constantRoutes,
+    ...anyRoutes,
+    ...asyncRoutes,
+  ])
 
   // actions
   // 用户登录
@@ -51,6 +66,8 @@ const useUserStore = defineStore('userStore', () => {
     if (code === 200) {
       // set userInfo
       Object.assign(userInfo, info)
+      const userAccessRoutes = filterAsyncRoutes(asyncRoutes, routeList)
+      console.log(userAccessRoutes, '@@@@@@@@@@@@@@@@@@@@')
     } else {
       return Promise.reject(new Error(message))
     }

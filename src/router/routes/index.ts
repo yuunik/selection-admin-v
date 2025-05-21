@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 
 // 常量路由
-const constantRoutes: RouteRecordRaw[] = [
+export const constantRoutes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('@/layout/index.vue'),
@@ -35,6 +35,28 @@ const constantRoutes: RouteRecordRaw[] = [
       icon: 'Platform',
     },
   },
+  {
+    path: '/login',
+    component: () => import('@/views/login/index.vue'),
+    name: 'Login',
+    meta: {
+      title: '登录页',
+      isShow: false,
+    },
+  },
+  {
+    path: '/404',
+    component: () => import('@/views/404/index.vue'),
+    name: '404',
+    meta: {
+      title: '错误页',
+      isShow: false,
+    },
+  },
+]
+
+// 动态路由
+export const asyncRoutes: RouteRecordRaw[] = [
   {
     name: 'Acl',
     path: '/acl',
@@ -79,7 +101,7 @@ const constantRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    name: 'Product',
+    name: 'Prod',
     path: '/prod',
     redirect: '/prod/trademark',
     component: () => import('@/layout/index.vue'),
@@ -131,24 +153,10 @@ const constantRoutes: RouteRecordRaw[] = [
       title: '商品管理',
     },
   },
-  {
-    path: '/login',
-    component: () => import('@/views/login/index.vue'),
-    name: 'Login',
-    meta: {
-      title: '登录页',
-      isShow: false,
-    },
-  },
-  {
-    path: '/404',
-    component: () => import('@/views/404/index.vue'),
-    name: '404',
-    meta: {
-      title: '错误页',
-      isShow: false,
-    },
-  },
+]
+
+// 任意路由
+export const anyRoutes: RouteRecordRaw[] = [
   {
     path: '/:pathMatch(.*)*',
     redirect: '/404',
@@ -159,5 +167,3 @@ const constantRoutes: RouteRecordRaw[] = [
     },
   },
 ]
-
-export default constantRoutes

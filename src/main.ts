@@ -9,6 +9,8 @@ import App from '@/App.vue'
 import globalComponents from './components'
 import router from '@/router'
 import store from '@/store'
+import { isButton } from '@/directives/has'
+import giveColor from '@/directives/color'
 
 import '@/styles/index.scss'
 import './permission'
@@ -21,6 +23,9 @@ app.use(store)
 app.use(globalComponents)
 // amount router
 app.use(router)
+// amount directive
+isButton(app)
+giveColor(app)
 
 // 挂载app实例
 app.mount('#app')
