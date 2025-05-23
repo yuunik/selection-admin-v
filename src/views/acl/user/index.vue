@@ -318,7 +318,13 @@ const handleDeleteUser = async (id: number) => {
     <!-- 数据区 -->
     <div class="common-style pb-50!" relative>
       <!-- 新增按钮 -->
-      <el-button type="primary" icon="Plus" mb12 @click="openAddUserDialog">
+      <el-button
+        type="primary"
+        icon="Plus"
+        mb12
+        @click="openAddUserDialog"
+        v-permission="`addUser`"
+      >
         新增
       </el-button>
       <!-- 数据表格 -->
@@ -340,13 +346,28 @@ const handleDeleteUser = async (id: number) => {
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template #default="{ row }">
-            <el-button type="warning" link @click="openAssignRoleDialog(row)">
+            <el-button
+              type="warning"
+              link
+              @click="openAssignRoleDialog(row)"
+              v-permission="`assignUser`"
+            >
               分配角色
             </el-button>
-            <el-button type="primary" link @click="openEditUserDialog(row)">
+            <el-button
+              type="primary"
+              link
+              @click="openEditUserDialog(row)"
+              v-permission="`editUser`"
+            >
               编辑
             </el-button>
-            <el-button type="danger" link @click="handleDeleteUser(row.id)">
+            <el-button
+              type="danger"
+              link
+              @click="handleDeleteUser(row.id)"
+              v-permission="`deleteUser`"
+            >
               删除
             </el-button>
           </template>

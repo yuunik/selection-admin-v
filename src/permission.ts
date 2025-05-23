@@ -48,13 +48,13 @@ router.beforeEach(async (to, from, next) => {
         try {
           // 无用户信息，重新获取用户信息
           await userStore.fetchUserInfo()
-          // 获取用户信息后, 放行
-          next()
+          // 等待组件挂载完成后, 放行
+          next({ ...to, replace: true })
         } catch (error) {
-          // 清除用户相关信息
-          await userStore.fetchLogout()
           // token 失效，提示用户重新登录
           ElMessage.error('token失效, 请重新登录')
+          // 清除用户相关信息
+          await userStore.fetchLogout()
           // 重定向到登录页面
           next({ path: '/login', query: { redirect: from.path } })
         }

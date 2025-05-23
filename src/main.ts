@@ -14,6 +14,7 @@ import giveColor from '@/directives/color'
 
 import '@/styles/index.scss'
 import './permission'
+import permission from '@/directives/permission'
 
 const app = createApp(App)
 
@@ -26,6 +27,7 @@ app.use(router)
 // amount directive
 isButton(app)
 giveColor(app)
+permission(app)
 
 // 挂载app实例
 app.mount('#app')
