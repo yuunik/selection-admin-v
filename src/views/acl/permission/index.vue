@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 import {
@@ -12,15 +12,6 @@ import type { SysMenuType } from '@/types/acl'
 
 // 权限数据列表
 const menuTableData = ref<SysMenuType[]>([])
-
-// 是否为编辑模式
-const isEditMode = computed(() => menuFormData.id)
-
-// 是否为添加模式
-const isAddMode = computed(() => menuFormData.parentId === 0)
-
-// 是否为添加子菜单模式
-const isAddSubMode = computed(() => menuFormData.parentId !== 0)
 
 // 获取权限列表
 const getMenuList = async () => {
@@ -45,6 +36,7 @@ const menuFormData = reactive<SysMenuType>({
   component: '',
   sortValue: undefined,
   status: undefined,
+  level: -1,
 })
 
 // 菜单标题
@@ -65,6 +57,7 @@ const openAddMenuDialog = () => {
     updateTime: '',
     isDeleted: undefined,
     parentId: undefined,
+    level: -1,
   } as SysMenuType)
   // 设置父菜单ID
   menuFormData.parentId = 0
@@ -87,6 +80,7 @@ const openAddChildrenMenu = (id: number) => {
     updateTime: '',
     isDeleted: undefined,
     parentId: undefined,
+    level: -1,
   } as SysMenuType)
   // 设置父菜单ID
   menuFormData.parentId = id

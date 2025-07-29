@@ -6,7 +6,6 @@ import type { RouteRecordRaw } from 'vue-router'
 import { getUserInfoApi, loginApi, logoutApi } from '@/apis/login'
 import type { LoginReqType, UserType } from '@/types/login'
 import router, { asyncRoutes, constantRoutes, anyRoutes } from '@/router'
-import { LAYER_SHORTCUTS } from 'unocss'
 
 // 过滤异步路由
 const filterAsyncRoutes = (
