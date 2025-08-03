@@ -37,6 +37,7 @@
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
     "@eslint/js": "^9.18.0",
+    "@iconify-json/ant-design": "^1.2.5",
     "@types/js-cookie": "^3.0.6",
     "@types/nprogress": "^0.2.3",
     "@unocss/preset-wind3": "66.1.0-beta.3",

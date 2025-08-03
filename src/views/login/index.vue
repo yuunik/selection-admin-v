@@ -267,21 +267,26 @@ watch(isShowCaptchaItem, (value) => {
             <el-divider>第三方登录</el-divider>
             <div class="icon-grp">
               <!-- QQ登录图标 -->
-              <SvgIcon
+              <!-- <SvgIcon
                 iconName="QQ"
                 class="qq-icon"
                 width="25"
                 height="25"
                 color="#10aeff"
-              />
+              /> -->
+              <i i-ant-design:qq-outlined class="text-[#10aeff] w-25 h-25" />
               <el-divider direction="vertical" />
               <!-- 微信登录图标 -->
-              <SvgIcon
+              <!-- <SvgIcon
                 iconName="wechat"
                 class="wechat-icon"
                 width="25"
                 height="25"
                 color="#2cb733"
+              /> -->
+              <i
+                i-ant-design:wechat-outlined
+                class="text-[#2cb733] w-25 h-25"
               />
             </div>
           </div>
