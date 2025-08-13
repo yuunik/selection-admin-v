@@ -55,7 +55,10 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
           // 重写路径
           rewrite: (path) =>
-            path.replace(new RegExp(`^${env.VITE_APP_BASE_API}`), ''),
+            path.replace(
+              new RegExp(`^${env.VITE_APP_BASE_API}`),
+              '11111111111111111111111111',
+            ),
         },
       },
     },
